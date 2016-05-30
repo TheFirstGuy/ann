@@ -17,31 +17,31 @@ public:
 	// Layers: The size of passed vector determines number of layers. Integers
 	// provided in each index determine number of neurons in each layer. Output
 	// layer is last layer in vector.
-	ANN(int numFeatures, std::vector<int> layers); 
+	ANN(const int& numFeatures, const std::vector<int>& layers); 
 
 	// Trains ANN on passed instance by classifying and performing back 
 	// propagation. instance: vector of features, must be equal
 	// to numFeatures. expected: Desired/expected classifications of output 
 	// neurons. Also expected to be of same size of output layer.
-	std::vector<double> train(std::vector<double> instance, std::vector<double> expected );
+	std::vector<double> train(const std::vector<double>& instance, const std::vector<double>& expected );
 	
 	// Activates on given inputs. No back propagation. See train() for parameter
 	// definitions.
-	std::vector<double> activate(std::vector<double> instance);
+	std::vector<double> activate(const std::vector<double>& instance);
 
 	// Returns number of output neurons.
-	int getNumOut();
+	int getNumOut() const;
 	// Returns number of input neurons.
-	int getNumIn();
+	int getNumIn() const;
 	// Returns number of layers (hidden + output layers).
-	int getNumHidLayers();
+	int getNumHidLayers() const;
 	// Returns number of neurons in a layer. layer: layer index number.
-	int getNumNeurons( int layer );
+	int getNumNeurons( const int& layer ) const;
 
 
 private:
-	int numIn;
-	int numOut;
+	const int numIn;
+	const int numOut;
 	std::vector<vector<Neuron>> layers;
 	
 
