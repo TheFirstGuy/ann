@@ -1,0 +1,27 @@
+/*
+Date: 5/29/2016
+Programer: Urs Evora
+Header file for Neurons.
+*/
+
+#ifndef NEURON_H
+#define NEURON_H
+
+#include <vector>
+
+class Neuron{
+public:
+	// Contructor for Neuron. numSynapse: number of inputs synapse required for 
+	// this neuron. Typically this is the number of neurons in the previous layer,
+	// or number of features.
+	Neuron(int numSynapse);
+
+private:
+	std::vector<double> synapse;
+	double bias;
+	// stores
+	std::vector<double> lastInput;
+	
+}
+
+#endif
