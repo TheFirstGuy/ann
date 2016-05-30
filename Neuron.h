@@ -22,8 +22,11 @@ public:
 	//Back propagate
 	double backProp(const std::vector<double>& deltaIn, const std::vector<double>& forwardSynapse); 
 	
-	// Returns the weight of requested synapse
-	double getSynapse(const int& index);
+	// Returns the weight of requested synapse.
+	double getSynapse(const int& index) const;
+
+	// Returns delta from last back propagation.
+	double getDelta() const;
 private:
 	std::vector<double> synapse;
 	double bias;
@@ -37,11 +40,11 @@ private:
 
 	// Helper function which updates weights of the synapse during back propagate.
 	//void updateSynapse();
-}
+};
 
 
-//Returns random double between 0 and 1.
-double random() const;
-
+// Returns random double between 0 and 1.
+double randD();
+// Calculates sigmoid function
 double sigmoid(const double& x);
 #endif

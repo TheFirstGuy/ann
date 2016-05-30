@@ -10,13 +10,13 @@ Implementation file for Neurons.
 #include <time.h>			// time
 #include "Neuron.h"
 
-Neuron::Neuron(const int numSynapse, const double& learningRate)
-	:learningRate(learningRate),bias(random()), delta(NULL), lastOutput(NULL){
+Neuron::Neuron(const int& numSynapse, const double& learningRate )
+	:learningRate(learningRate),bias(1), delta(NULL), lastOutput(NULL){
 	// Initialize synapse and last inputs
 	srand(time(NULL));
 	for(int i = 0; i < numSynapse; i++){
-		synapse.push_back(random());
-		lastInputs.push_back(NULL);
+		synapse.push_back(randD());
+		lastInputs.push_back(0);
 	}
 }
 
@@ -59,11 +59,11 @@ double Neuron::getDelta() const{
 	return delta;
 }
 
-double random() const{
+double randD(){
 	return (double)rand() / RAND_MAX;
 }
 
-double sigmoid(const double& x) const{
+double sigmoid(const double& x){
 	return 1.0/(1 + exp(-x));
 }
 
