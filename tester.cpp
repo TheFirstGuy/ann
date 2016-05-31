@@ -9,6 +9,9 @@ Testing functions for Neuron and ANN.
 #include <math.h>
 #include "Neuron.h"
 
+
+
+
 // Tests if randomD is within acceptable range
 
 bool testRandom( int num ){
@@ -51,7 +54,7 @@ bool testSigmoid( double num ){
 // Tests Neuron activation with multiple sizes and learning rates
 // with sudo data. Assumes randD works. Checks if activation is NaN
 // or tends to infinity.
-bool neuronActivate(int num){
+bool testActivation(int num){
 	double learningRate = 0.1;
 	int size;
 	double result;
@@ -68,12 +71,24 @@ bool neuronActivate(int num){
 			if( result == -1 || isnan(result) || isfinite(result) ){
 				std::cout << "Activation failed. Displaying input vector... /n";
 				for( double d : testInst ){
-					std::cout << d << endl;
+					std::cout << d << std::endl;
 				}
-				std::cout << "Result: " << result << endl;
+				std::cout << "Result: " << result << std::endl;
 				return false;
 			}
 		}
 	}
 	return true;
+}
+
+int main(){
+	std::cout << "Testing Neuron..." << std::endl;
+	std::cout << "Testing Random with 10000 numbers." << std::endl;
+	testRandom( 10000 );
+	std::cout << "Testing sigmoid with 10000 numbers." << std::endl;
+	testSigmoid( 10000 );
+	std::cout << "Testing activation up to size 50." << std::endl;
+	testActivation( 50 );
+	std::cout << "Test complete." << std::endl;
+	return 0;
 }

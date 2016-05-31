@@ -2,6 +2,12 @@
 # directory
 all: ann
 
+test: testAnn
+
+# Compile with tester main file
+testAnn: tester.o Neuron.o
+	g++ tester.o Neuron.o -o testAnn
+
 ann: main.o Neuron.o
 	g++ main.o Neuron.o -o ann
 	
@@ -10,9 +16,13 @@ ann: main.o Neuron.o
 main.o: main.cpp
 	g++ -c main.cpp
 
+tester.o: tester.cpp
+	g++ -c tester.cpp
+	
 Neuron.o: Neuron.cpp
 					g++ -c Neuron.cpp
 
 clean:
 					rm -rf *o ann
+					rm -rf *o testAnn
 
