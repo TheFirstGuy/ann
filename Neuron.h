@@ -24,6 +24,9 @@ public:
 	
 	// Returns the weight of requested synapse.
 	double getSynapse(const int& index) const;
+	
+	// Returns output from last activation.
+	double getOutput() const;
 
 	// Returns delta from last back propagation.
 	double getDelta() const;

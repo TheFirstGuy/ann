@@ -35,7 +35,7 @@ double Neuron::activate(const std::vector<double>& inputs){
 double Neuron::backProp(const std::vector<double>& deltaIn, 
 const std::vector<double>& forwardSynapse){
 	// Check if deltas equal forwardSynapse
-	if( deltaIn.size() != synapse.size() ){ return -1; }
+	if( deltaIn.size() != forwardSynapse.size() ){ return -1; }
 	// Calculate delta (node error)	
 	double error = 0;
 	for( int i = 0; i < deltaIn.size(); i++ ){
@@ -57,6 +57,10 @@ double Neuron::getSynapse(const int& index) const{
 
 double Neuron::getDelta() const{
 	return delta;
+}
+
+double Neuron::getOutput() const{
+	return lastOutput;
 }
 
 double randD(){

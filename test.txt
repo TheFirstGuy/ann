@@ -1,0 +1,6 @@
+Testing Neuron...
+Testing Random with 10000 numbers.
+Testing sigmoid with 10000 numbers.
+Testing activation up to size 50.
+Testing back prop up to size 50.
+Test complete.

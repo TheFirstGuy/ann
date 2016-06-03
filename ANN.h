@@ -17,17 +17,18 @@ public:
 	// Layers: The size of passed vector determines number of layers. Integers
 	// provided in each index determine number of neurons in each layer. Output
 	// layer is last layer in vector.
-	ANN(const int& numFeatures, const std::vector<int>& layers); 
+	ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate); 
 
 	// Trains ANN on passed instance by classifying and performing back 
 	// propagation. instance: vector of features, must be equal
 	// to numFeatures. expected: Desired/expected classifications of output 
 	// neurons. Also expected to be of same size of output layer.
-	std::vector<double> train(const std::vector<double>& instance, const std::vector<double>& expected );
+	void train(const std::vector<double>& instance, const std::vector<double>& expected,
+	std::vector<double>& result );
 	
 	// Activates on given inputs. No back propagation. See train() for parameter
 	// definitions.
-	std::vector<double> activate(const std::vector<double>& instance);
+	void activate(const std::vector<double>& instance, std::vector<double>& result);
 
 	// Returns number of output neurons.
 	int getNumOut() const;
@@ -42,7 +43,28 @@ public:
 private:
 	const int numIn;
 	const int numOut;
-	std::vector<vector<Neuron>> layers;
+	const double learningRate;
+	std::vector<vector<Neuron*>> network;
+	
+	// Returns layer's outputs. Clears result vector before adding data.
+	// Assumes valid layer number.
+	void getOutputs( const int& layer, std::vector<double>& result ) const;
+	
+	// Generates a matrix consisting of a layer's synapse. Clears provided matrix
+	// before modifying. Each sub vector is with respect to lower layer's synapse.
+	// Cannot be last index.
+	void getFS(const int& layer, std::vector<std::vector<double>*>& result ) const;
+	
+	// Returns layer's error. Clears result vector before adding data.
+	// Assumes valid layer number.
+	//void getDeltas( const int& layer, std::vector<double>& result )const;
+	
+	// Calculates the error between the output and the expected value. Clears passed
+	// in error vector before calculating.
+	// Expected: Expected value vector. outputs: output value vector from last activation.
+	// error: resulting vector.
+	void calculateError( const std::vector<double>& expected, const std::vector<double>& outputs,
+		std::vector<double> error);
 	
 
 }

@@ -5,11 +5,11 @@ all: ann
 test: testAnn
 
 # Compile with tester main file
-testAnn: tester.o Neuron.o
-	g++ tester.o Neuron.o -o testAnn
+testAnn: tester.o ANN.o Neuron.o
+	g++ tester.o ANN.o Neuron.o -o testAnn
 
-ann: main.o Neuron.o
-	g++ main.o Neuron.o -o ann
+ann: main.o ANN.o Neuron.o
+	g++ main.o ANN.o Neuron.o -o ann
 	
 	#g++ Neuron.o -o neuron
 
@@ -18,6 +18,9 @@ main.o: main.cpp
 
 tester.o: tester.cpp
 	g++ -c tester.cpp
+	
+ANN.o: ANN.cpp
+	g++ -c Neuron.cpp
 	
 Neuron.o: Neuron.cpp
 					g++ -c Neuron.cpp
