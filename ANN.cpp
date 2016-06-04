@@ -30,6 +30,32 @@ ANN::ANN(const int& numFeatures, const std::vector<int>& layers, const double& l
 	}
 }
 
+
+ANN::ANN( const ANN& rhs )
+	:numIn(rhs.numIn), numOut(rhs.numOut), learningRate( rhs.learningRate ){
+	std::vector<Neuron*> layer;
+	for( std::vector<std::vector<Neuron*>>::iterator itr = rhs.network.begin(); itr != rhs.network.end(); ++itr){
+		// Make new copies of Neuron
+		for( int i = 0; i < itr->size(); ++i){
+			layer.push_back(new Neuron(*((*itr)[i])));
+		}
+		network.push_back(layer);
+		layer.clear();
+	}
+}
+
+ANN::~ANN(){
+	for( std::vector<std::vector<Neuron*>>::iterator itr = network.begin(); itr != network.end(); ++itr){
+		// Delete neurons
+		for( int i = 0; i < itr->size(); ++i){
+			delete (*itr)[i];
+		}
+	}
+}
+
+
+
+
 void ANN::activate(const std::vector<double>& instance, std::vector<double>& result ){
 	// Layer loop
 	for( int i = 0; i < network.size(); i++){

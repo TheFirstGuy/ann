@@ -17,7 +17,13 @@ public:
 	// Layers: The size of passed vector determines number of layers. Integers
 	// provided in each index determine number of neurons in each layer. Output
 	// layer is last layer in vector.
-	ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate); 
+	ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate);
+	
+	// Copy constructor
+	ANN( const ANN& rhs );
+	
+	//Destructor
+	~ANN(); 
 
 	// Trains ANN on passed instance by classifying and performing back 
 	// propagation. instance: vector of features, must be equal
