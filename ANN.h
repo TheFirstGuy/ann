@@ -50,7 +50,7 @@ private:
 	const int numIn;
 	const int numOut;
 	const double learningRate;
-	std::vector<vector<Neuron*>> network;
+	std::vector<std::vector<Neuron*> > network;
 	
 	// Returns layer's outputs. Clears result vector before adding data.
 	// Assumes valid layer number.
@@ -70,9 +70,9 @@ private:
 	// Expected: Expected value vector. outputs: output value vector from last activation.
 	// error: resulting vector.
 	void calculateError( const std::vector<double>& expected, const std::vector<double>& outputs,
-		std::vector<double> error);
+		std::vector<double>& error);
 	
 
-}
+};
 
 #endif

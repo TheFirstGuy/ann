@@ -20,7 +20,7 @@ tester.o: tester.cpp
 	g++ -c tester.cpp
 	
 ANN.o: ANN.cpp
-	g++ -c Neuron.cpp
+	g++ -c ANN.cpp
 	
 Neuron.o: Neuron.cpp
 					g++ -c Neuron.cpp
