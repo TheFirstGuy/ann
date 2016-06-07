@@ -5,7 +5,7 @@ Implementation file for ANN.
 */
 
 #include <vector>
-//#include <iostream> 	// debug
+#include <iostream> 	// debug
 #include <algorithm>	// std::fill
 //#include <pthread.h>
 #include "ANN.h"
@@ -58,6 +58,7 @@ ANN::~ANN(){
 
 
 void ANN::activate(const std::vector<double>& instance, std::vector<double>& result ){
+	result.clear();
 	// Layer loop
 	for( int i = 0; i < network.size(); i++){
 		// Neuron loop. For every neuron, activate on output of previous layer
@@ -67,7 +68,7 @@ void ANN::activate(const std::vector<double>& instance, std::vector<double>& res
 		for( int j = 0; j < network[i].size(); j++ ){
 			// if input layer, pass instance.
 			if( i == 0 ){
-				result.push_back(network[i][j]->activate( instance ));
+				network[i][j]->activate( instance );
 			}
 			// Otherwise pass last layers outputs
 			else{
@@ -94,16 +95,20 @@ void ANN::train(const std::vector<double>& instance, const std::vector<double>& 
 	std::vector<double> ones(network[network.size()-1].size(), 1.0);
 	std::vector<std::vector<double>*> fs1; 
 	std::vector<std::vector<double>*> fs2;
+	bool deltaSet = false; // Flags for deltas
 	calculateError( expected, result, error );
+	//std::cout << "Error: " << error[0] << std::endl;
 	for( int i = network.size() - 1; i >= 0; i--){
 		// Get forward synapse before back prop
-		if( i % 2 == 0){ 
+		if( !deltaSet ){ 
+			deltaSet = true;
 			delta1.clear();
 			if( i != 0 ){
 				getFS(i - 1, fs2);
 			}
 		}
 		else{
+			deltaSet = false;
 			delta2.clear();
 			if( i != 0 ){
 				getFS(i - 1, fs1);
@@ -111,12 +116,14 @@ void ANN::train(const std::vector<double>& instance, const std::vector<double>& 
 		}
 		for( int j = 0; j < network[i].size(); j++ ){
 			// If output layer. Delta = error
+			//std::cout << "I: " << i << " J: " << j << std::endl;
 			if( i == network.size() - 1){
 				delta1.push_back(network[i][j]->backProp(error, ones));
 			}
 			else{
 				// Use second delta if odd i
-			 	if( i % 2 != 0 ){
+			 	if( !deltaSet ){
+			 		//std::cout << "HERE" << std::endl;
 					delta2.push_back(network[i][j]->backProp(delta1, *fs2[j])); 
 				}
 				else{
@@ -154,7 +161,7 @@ void ANN::getFS(const int& layer, std::vector<std::vector<double>*>& result ) co
 		// Loop through each neuron in forward layer.
 		std::vector<double>* fs = new std::vector<double>(network[layer+1].size());
 		for( int j = 0; j < network[layer + 1].size(); j++ ){
-			fs->push_back(network[layer+1][j]->getSynapse(i));
+			(*fs)[j] = network[layer+1][j]->getSynapse(i);
 		}
 		result.push_back(fs);
 	}
@@ -182,4 +189,23 @@ int ANN::getNumHidLayers() const{
 
 int ANN::getNumNeurons( const int& layer ) const{
 	return network[layer].size();
+}
+
+void ANN::getNetSynapse() const{
+	for( int i = 0; i < network.size(); ++i ){
+		std::cout << "Layer: " << i << std::endl;
+		for(int j = 0; j < network[i].size(); ++j){
+			std::cout << "Neuron: " << j << std::endl;
+			if( i == 0 ){
+				for( int k = 0; k < numIn; ++k ){
+					std::cout << network[i][j]->getSynapse(k) << std::endl;
+				}
+			}
+			else{
+				for( int k = 0; k < network[i - 1].size(); ++k ){
+					std::cout << network[i][j]->getSynapse(k) << std::endl;
+				}
+			}
+		}
+	}
 }

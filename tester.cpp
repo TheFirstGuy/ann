@@ -37,6 +37,7 @@ bool testSigmoid( double num ){
 	double x = 0;
 	while( x < num ){
 		result = sigmoid(x);
+		std::cout << "X: " << x << " Result: " << result << std::endl;
 		if( result > 1 || !isfinite(result) || result < -1 ){
 			std::cout << "Sigmoid Failed. result: " << result << " x: " << 
 			std::endl;
@@ -229,6 +230,7 @@ bool testANNTrain(int num, int range, int numLayers, int iterations, double lear
 	for( int i = 0; i < iterations; ++i){
 		// Generate random instances
 		instance.clear();
+		expected.clear();
 		for( int j = 0; j < net1.getNumIn(); ++j){
 			instance.push_back(randD());
 		}	
@@ -266,8 +268,9 @@ bool testANNTrain(int num, int range, int numLayers, int iterations, double lear
 // 3 neuron hidden layer and 1 output neuron. 
 void trainXOR(int iterations, double learningRate){
 	// Initialize network
-	std::vector<int> layers(2);
-	layers.push_back(3);
+	std::vector<int> layers;
+	layers.push_back(5);
+	//layers.push_back(5);
 	layers.push_back(1);
 	ANN net( 2, layers, learningRate );
 	// Train
@@ -277,18 +280,29 @@ void trainXOR(int iterations, double learningRate){
 	for( int i = 0; i < iterations; ++i ){
 		instance.clear();
 		expected.clear();
-		instance.push_back(randD());
-		instance.push_back(randD());
-		double sum = instance[0] + instance[1];
-		if( sum >= 1.0 ){ expected.push_back(1.0); }
+		if(randD() > 0.5 ){
+			instance.push_back(1.0);
+		}
+		else{
+			instance.push_back(0.0) ;
+		}
+		if(randD() > 0.5 ){
+			instance.push_back(1.0);
+		}
+		else{
+			instance.push_back(0.0) ;
+		}
+		if( (instance[0] > 0.5 && instance[1] < 0.5) || (instance[0] < 0.5 && instance[1] > 0.5) ){ expected.push_back(1.0); }
 		else{ expected.push_back( 0.0 ); }
 		net.train( instance, expected, result );
 		if( i % (iterations/10) == 0 ){
+			//net.getNetSynapse();
 			std::cout << "Training instance: " << i << std::endl;
 			std::cout << "x: " << instance[0] << std::endl;
 			std::cout << "y: " << instance[1] << std::endl;
 			std::cout << "Expected: " << expected[0] << std::endl;
 			std::cout << "Result: " << result[0] << std::endl;
+			
 		}
 	}
 }
@@ -312,8 +326,8 @@ int main(){
 	std::cout << "Testing ANN training up to 5 layers, with up to 50 neurons per layer." << 
 	" With up to 100 iterations. "<< std::endl;
 	testANNTrain(50, 1, 5, 100, 0.4 );
-	std::cout << "Testing XOR for 100 iterations and 0.2 learning rate." << std::endl;
-	trainXOR( 100, 0.2 );
+	std::cout << "Testing XOR for 100000 iterations and 0.2 learning rate." << std::endl;
+	trainXOR( 100000, 0.2 );
 	std::cout << "Test complete." << std::endl;
 	return 0;
 }

@@ -5,17 +5,23 @@ Implementation file for Neurons.
 */
 
 #include <vector>
+#include <iostream> 	// debug
 #include <stdlib.h> 	// random
 #include <math.h> 		// exp
 #include <time.h>			// time
 #include "Neuron.h"
 
 Neuron::Neuron(const int& numSynapse, const double& learningRate )
-	:learningRate(learningRate),bias(1), delta(NULL), lastOutput(NULL){
+	:learningRate(learningRate),bias(randD()), delta(NULL), lastOutput(NULL){
 	// Initialize synapse and last inputs
-	srand(time(NULL));
+	//srand(time(NULL));
 	for(int i = 0; i < numSynapse; i++){
-		synapse.push_back(randD());
+		if(randD() > 0.5){	
+			synapse.push_back(randD());
+		}
+		else{	
+			synapse.push_back(-randD());
+		}
 		lastInputs.push_back(0);
 	}
 }
@@ -42,10 +48,14 @@ const std::vector<double>& forwardSynapse){
 		error += deltaIn[i] * forwardSynapse[i];
 	}
 	delta = error * lastOutput * (1 - lastOutput);
+	//delta = error * ( 1 - lastOutput * lastOutput );
 	// Update synapse weights
 	for( int i = 0; i < synapse.size(); i++ ){
-		synapse[i] = synapse[i] - learningRate * delta * lastInputs[i];
+		double temp = synapse[i] - learningRate * delta * lastInputs[i];
+		//std::cout << "Temp: " << temp << std::endl;
+		synapse[i] = temp;
 	}
+	bias = bias - learningRate * delta;
 	return delta;
 }
 
@@ -69,6 +79,7 @@ double randD(){
 
 double sigmoid(const double& x){
 	return 1.0/(1 + exp(-x));
+	//return 2.0/(1 + exp(-2 * x));
 }
 
 

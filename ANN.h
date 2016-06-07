@@ -44,6 +44,9 @@ public:
 	int getNumHidLayers() const;
 	// Returns number of neurons in a layer. layer: layer index number.
 	int getNumNeurons( const int& layer ) const;
+	
+	// Returns synapse weights for all layers.
+	void getNetSynapse() const;
 
 
 private:

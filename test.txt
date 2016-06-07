@@ -1,6 +1,79 @@
 Testing Neuron...
 Testing Random with 10000 numbers.
 Testing sigmoid with 10000 numbers.
+X: 0 Result: 0.5
+X: 1e-14 Result: 0.5
+X: 1.1e-13 Result: 0.5
+X: 1.11e-12 Result: 0.5
+X: 1.111e-11 Result: 0.5
+X: 1.1111e-10 Result: 0.5
+X: 1.11111e-09 Result: 0.5
+X: 1.11111e-08 Result: 0.5
+X: 1.11111e-07 Result: 0.5
+X: 1.11111e-06 Result: 0.5
+X: 1.11111e-05 Result: 0.500003
+X: 0.000111111 Result: 0.500028
+X: 0.00111111 Result: 0.500278
+X: 0.0111111 Result: 0.502778
+X: 0.111111 Result: 0.527749
+X: 1.11111 Result: 0.752336
+X: 11.1111 Result: 0.999985
+X: 111.111 Result: 1
+X: 1111.11 Result: 1
 Testing activation up to size 50.
 Testing back prop up to size 50.
+Testing ANN constructors up to 5 layers, with up to 50 neurons per layer.
+Testing ANN activation up to 5 layers, with up to 50 neurons per layer. With up to 100 iterations. 
+Testing ANN training up to 5 layers, with up to 50 neurons per layer. With up to 100 iterations. 
+Testing XOR for 100000 iterations and 0.2 learning rate.
+Training instance: 0
+x: 1
+y: 1
+Expected: 0
+Result: 0.558142
+Training instance: 10000
+x: 0
+y: 1
+Expected: 1
+Result: 0.928693
+Training instance: 20000
+x: 0
+y: 1
+Expected: 1
+Result: 0.963629
+Training instance: 30000
+x: 1
+y: 1
+Expected: 0
+Result: 0.0369788
+Training instance: 40000
+x: 0
+y: 1
+Expected: 1
+Result: 0.976574
+Training instance: 50000
+x: 0
+y: 0
+Expected: 0
+Result: 0.0139825
+Training instance: 60000
+x: 1
+y: 0
+Expected: 1
+Result: 0.978787
+Training instance: 70000
+x: 0
+y: 0
+Expected: 0
+Result: 0.0116062
+Training instance: 80000
+x: 1
+y: 0
+Expected: 1
+Result: 0.982089
+Training instance: 90000
+x: 1
+y: 0
+Expected: 1
+Result: 0.983198
 Test complete.
