@@ -11,7 +11,61 @@ Testing functions for Neuron and ANN.
 #include <stdlib.h> 	// random
 #include "Neuron.h"
 #include "ANN.h"
+#include "Instance.h"
+//#include "utils.h"
 
+
+
+
+// Returns a random integer from [0 to max) (exclusive)
+int randI( const int& max ){
+	return (int)(rand() % max );
+}
+// Returns random character
+char randC(){
+	return (char)(rand() % 256);		
+}
+
+// Returns random string
+std::string randS(const size_t& size){
+	char temp [size];
+	for(int i = 0; i < size; ++i){
+		temp[i] = randC();
+	}
+	return std::string(temp, size);
+}
+
+// Generates random instances.
+// num: number of instances to be generated.
+// dataSize: number of features to be generated.
+// eSize: number of expected outputs.
+// strLen: length of random strings generated.
+// instances: input/output vector of instances
+void genRandInsts( const int& num, const int& dataSize, const int& eSize,
+const int& strLen, std::vector<Instance>& instances ){
+	std::shared_ptr<std::vector<std::string> > features(new std::vector<std::string>());
+	std::shared_ptr<std::vector<std::string> > classes(new std::vector<std::string>());
+	// Generate sudo names for features and classes
+	for( int i = 0; i < dataSize; ++i){
+		features->push_back(randS(strLen));
+	}
+	for( int i = 0; i < eSize; ++i){
+		classes->push_back(randS(strLen));
+	}
+	// Generate instances
+	for( int i = 0; i < num; ++i ){
+		// Generate sudo data for each instance
+		std::vector<double>* data = new std::vector<double>();
+		std::vector<double>* expected = new std::vector<double>();
+		for( int j = 0; j < dataSize; ++j ){
+			data->push_back(randD());
+		}
+		for( int j = 0; j < dataSize; ++j ){
+			expected->push_back(randD());
+		}
+		instances.push_back( Instance( randS(strLen), data, expected, features, classes ));
+	}
+}
 
 
 
@@ -297,6 +351,42 @@ void trainXOR(int iterations, double learningRate){
 	}
 }
 
+// Tests instances and methods.
+bool testInstances( int num, int dataSize, int eSize, int strLen ){
+	std::vector<Instance> instances;
+	genRandInsts( num, dataSize, eSize, strLen, instances );
+	// Check if feature name and class match
+	int index1 = randI(instances.size()), index2 = randI(instances.size());
+	// Ensure indexs are unique
+	while( index1 == index2 ){ index2 = randI(instances.size());}
+	Instance inst1 = instances[index1], inst2 = instances[index2];
+	// Test if features and class names are the same
+	for( int i = 0; i < dataSize; ++i ){
+		if( inst1.getFeatName(i) != inst2.getFeatName(i) ){
+			std::cout << "Features names do not match. Inst1: " << inst1.getFeatName(i) <<
+			" Inst2: " << inst2.getFeatName(i) << std::endl;
+		}
+	}
+	for( int i = 0; i < eSize; ++i ){
+		if(inst1.getClassName(i) != inst2.getClassName(i) ){
+			std::cout << "Class names do not match. Inst1: " << inst1.getClassName(i) <<
+			" Inst2: " << inst2.getClassName(i) << std::endl;
+		}
+	}
+	// Test in ANN
+	std::vector<int> layers;
+	layers.push_back( dataSize );
+	layers.push_back( randI(dataSize) + dataSize );
+	layers.push_back( eSize );
+	ANN net( dataSize, layers, 0.2 );
+	std::vector<double> result;
+	for( Instance& i : instances ){
+		net.train( i, result );
+	}
+}
+
+
+
 int main(){
 	srand(time(NULL));
 	std::cout << "Testing Neuron..." << std::endl;
@@ -318,6 +408,8 @@ int main(){
 	testANNTrain(50, 1, 5, 100, 0.4 );
 	std::cout << "Testing XOR for 100000 iterations and 0.2 learning rate." << std::endl;
 	trainXOR( 100000, 0.2 );
+	std::cout << "Testing 100 instances and a 3 layer ANN with instances." << std::endl; 
+	testInstances( 100, 15, 3, 8 );
 	std::cout << "Test complete." << std::endl;
 	return 0;
 }

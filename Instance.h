@@ -14,13 +14,13 @@ Header file for instance class and functions.
 /* The Instance class encapsulates data for a single instance.
 It keeps track of features, class names, and data.
 */
-class Instance{
+struct Instance{
 	public:
 		// Constructor for instance class. Data and expected will be converted into
 		// unique pointers. Features and classes are copied/
-		Instance( const std::string& name, const std::vector<double>* data,
-		const std::vector<double>* expected, const std::shared_ptr<std::vector<std::string> > features,
-		const std::shared_ptr<std::vector<std::string> > classes );
+		Instance( const std::string& name,  std::vector<double>* data,
+		std::vector<double>* expected, std::shared_ptr<std::vector<std::string> >& features,
+		 std::shared_ptr<std::vector<std::string> >& classes );
 		
 		// Copy constructor
 		Instance( const Instance& rhs );
@@ -48,21 +48,21 @@ class Instance{
 		
 		// Returns name of class at given index.
 		std::string getClassName( const int& index ) const;
-		
+	
 		// Training set name.
-		const std::string name;
-		
+		std::string name;
+	
 		// numeric representation of instance. a.k.a input data.
-		const std::unique_ptr<std::vector<double> > data;
+		std::unique_ptr<std::vector<double> > data;
 		
 		// Numeric representation of expected outputs (0,1).
-		const std::unique_ptr<std::vector<double> > expected;
+		std::unique_ptr<std::vector<double> > expected;
 		
 		// Pointer to names of each feature input.
-		const std::shared_ptr<std::vector<std::string> > features;
+		std::shared_ptr<std::vector<std::string> > features;
 		
 		// Pointer to names of each expected output classification
-		const std::shared_ptr<std::vector<std::string> > classes;
+		std::shared_ptr<std::vector<std::string> > classes;
 		
 };
 

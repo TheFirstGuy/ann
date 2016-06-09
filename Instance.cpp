@@ -7,15 +7,19 @@ Implementation file for instance class and functions.
 #include <vector>
 #include <memory>
 #include <string>
+#include "Instance.h"
 
 
-Instance::Instance( const std::string& name, const std::vector<double>* data,
-		const std::vector<double>* expected, const std::shared_ptr<std::vector<std::string> > features,
-		const std::shared_ptr<std::vector<std::string> > classes )
-		:name(name), data(data), expected(excted), features(features), classes(classes){}
+Instance::Instance( const std::string& name,  std::vector<double>* data,
+		std::vector<double>* expected,  std::shared_ptr<std::vector<std::string> >& features,
+		 std::shared_ptr<std::vector<std::string> >& classes )
+		:name(name), data(data), expected(expected), features(features), classes(classes){
 		
-Instance::Instance( const Instance& rhs ){
-	name = rhs.name;
+		}
+		
+Instance::Instance( const Instance& rhs )
+	:name(rhs.name){
+	//this->name = rhs.name;
 	std::vector<double>* tData = new std::vector<double>();
 	std::vector<double>* eData = new std::vector<double>();
 	// Make new copy of data and expected on the heap
@@ -33,12 +37,14 @@ Instance::Instance( const Instance& rhs ){
 }
 
 Instance& Instance::operator=( const Instance& rhs ){
-	if( this != &other ){
+	if( this != &rhs ){
 		// clear old pointers
 		data.reset();
 		expected.reset();
 		features.reset();
 		classes.reset();
+		std::vector<double>* tData = new std::vector<double>();
+		std::vector<double>* eData = new std::vector<double>();
 		// Make new copy of data and expected on the heap
 		for(const double d : *(rhs.data) ){
 			tData->push_back(d);
@@ -47,7 +53,7 @@ Instance& Instance::operator=( const Instance& rhs ){
 			eData->push_back(d);
 		}
 		// Assign members
-		name = rhs.name();
+		name = rhs.name;
 		data = std::unique_ptr<std::vector<double> >(tData);
 		expected = std::unique_ptr<std::vector<double> >(eData);
 		features = std::shared_ptr<std::vector<std::string> >(rhs.features);

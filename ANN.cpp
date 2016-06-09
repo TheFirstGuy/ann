@@ -6,10 +6,11 @@ Implementation file for ANN.
 
 #include <vector>
 #include <iostream> 	// debug
-#include <algorithm>	// std::fill
-//#include <pthread.h>
+#include <memory>			// smart pointers
+
 #include "ANN.h"
 #include "Neuron.h"
+#include "Instance.h"
 
 ANN::ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate)
 	:numIn(numFeatures), learningRate(learningRate),numOut(layers[layers.size() - 1]){
@@ -84,6 +85,12 @@ void ANN::activate(const std::vector<double>& instance, std::vector<double>& res
 	}
 }
 
+
+void ANN::activate(const Instance& instance, std::vector<double>& result ){
+	activate( *(instance.data), result );
+}
+
+
 void ANN::train(const std::vector<double>& instance, const std::vector<double>& expected,
 	std::vector<double>& result ){
 	activate( instance, result );
@@ -142,6 +149,10 @@ void ANN::train(const std::vector<double>& instance, const std::vector<double>& 
 	}
 }
 	
+
+void ANN::train(const Instance& instance, std::vector<double>& result ){
+	train( *(instance.data), *(instance.expected), result );
+}
 	
 void ANN::getOutputs( const int& layer, std::vector<double>& result ) const{
 	result.clear();

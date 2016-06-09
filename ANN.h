@@ -10,6 +10,7 @@ Header file for ANN.
 
 #include <vector>
 #include "Neuron.h"
+#include "Instance.h"
 
 class ANN{
 public:
@@ -31,6 +32,12 @@ public:
 	// neurons. Also expected to be of same size of output layer.
 	void train(const std::vector<double>& instance, const std::vector<double>& expected,
 	std::vector<double>& result );
+	
+	// Wrapper to other train function. Uses Instance class instead.
+	void train(const Instance& instance, std::vector<double>& result );
+	
+	// Wrapper to other activate function. Uses Instance class instead.
+	void activate(const Instance& instance, std::vector<double>& result );
 	
 	// Activates on given inputs. No back propagation. See train() for parameter
 	// definitions.
