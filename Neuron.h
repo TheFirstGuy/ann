@@ -47,7 +47,7 @@ private:
 
 
 // Returns random double between 0 and 1.
-double randD();
+//double randD();
 // Calculates sigmoid function
 double sigmoid(const double& x);
 #endif

@@ -5,7 +5,7 @@ CC=g++
 
 CFLAGS= -std=c++0x -c
 
-SOURCES= main.o ANN.o Neuron.o Instance.o 
+SOURCES= main.o ANN.o Neuron.o Instance.o utils.o
 
 
 all: ann
@@ -13,8 +13,8 @@ all: ann
 test: testAnn
 
 # Compile with tester main file
-testAnn: tester.o ANN.o Neuron.o Instance.o
-	$(CC) tester.o ANN.o Neuron.o Instance.o -o testAnn
+testAnn: tester.o ANN.o Neuron.o Instance.o utils.o
+	$(CC) tester.o ANN.o Neuron.o Instance.o utils.o -o testAnn
 
 ann: main.o ANN.o Neuron.o
 	$(CC) $(SOURCES) -o ann
@@ -35,6 +35,9 @@ Neuron.o: Neuron.cpp
 	
 Instance.o: Instance.cpp
 	$(CC) $(CFLAGS) Instance.cpp
+	
+utils.o: utils.cpp
+	$(CC) $(CFLAGS) utils.cpp
 
 clean:
 					rm -rf *o ann

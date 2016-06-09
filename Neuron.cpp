@@ -6,10 +6,11 @@ Implementation file for Neurons.
 
 #include <vector>
 #include <iostream> 	// debug
-#include <stdlib.h> 	// random
+//#include <stdlib.h> 	// random
 #include <math.h> 		// exp
 #include <time.h>			// time
 #include "Neuron.h"
+#include "utils.h"	
 
 Neuron::Neuron(const int& numSynapse, const double& learningRate )
 	:learningRate(learningRate),bias(randD()), delta(NULL), lastOutput(NULL){
@@ -73,9 +74,7 @@ double Neuron::getOutput() const{
 	return lastOutput;
 }
 
-double randD(){
-	return (double)rand() / RAND_MAX;
-}
+
 
 double sigmoid(const double& x){
 	return 1.0/(1 + exp(-x));
