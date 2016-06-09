@@ -32,7 +32,16 @@ class Instance{
 		~Instance();
 		
 		// Returns specific feature data at provided index;
-		double operator[]( const int& index );
+		double operator[]( const int& index ) const;
+		
+		// Returns specific expected data at provided index.
+		double getExpected( const int& index ) const;
+		
+		// Return data instance size.
+		size_t getDataSize() const;
+		
+		// Return expected size.
+		size_t getExpectSize() const;
 	
 		// Returns name of feature at given index.
 		std::string getFeatName( const int& index ) const;
