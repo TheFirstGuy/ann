@@ -29,7 +29,7 @@ bool testRandom( int num ){
 	return true;
 }
 
-// Tests if sigmoid is within acceptable range (-1 - 1)
+// Tests if sigmoid is within acceptable range (0 - 1)
 
 bool testSigmoid( double num ){
 	double result;
@@ -37,14 +37,14 @@ bool testSigmoid( double num ){
 	double x = 0;
 	while( x < num ){
 		result = sigmoid(x);
-		std::cout << "X: " << x << " Result: " << result << std::endl;
-		if( result > 1 || !isfinite(result) || result < -1 ){
+		//std::cout << "X: " << x << " Result: " << result << std::endl;
+		if( result > 1 || !isfinite(result) || result < 0 ){
 			std::cout << "Sigmoid Failed. result: " << result << " x: " << 
 			std::endl;
 			return false;
 		}
 		result = sigmoid(-x);
-		if( result > 1 || !isfinite(result) || result < -1 ){
+		if( result > 1 || !isfinite(result) || result < 0 ){
 			std::cout << "Sigmoid Failed. result: " << result << " x: " << 
 			std::endl;
 			return false;
@@ -280,18 +280,8 @@ void trainXOR(int iterations, double learningRate){
 	for( int i = 0; i < iterations; ++i ){
 		instance.clear();
 		expected.clear();
-		if(randD() > 0.5 ){
-			instance.push_back(1.0);
-		}
-		else{
-			instance.push_back(0.0) ;
-		}
-		if(randD() > 0.5 ){
-			instance.push_back(1.0);
-		}
-		else{
-			instance.push_back(0.0) ;
-		}
+		instance.push_back(randD());
+		instance.push_back(randD());
 		if( (instance[0] > 0.5 && instance[1] < 0.5) || (instance[0] < 0.5 && instance[1] > 0.5) ){ expected.push_back(1.0); }
 		else{ expected.push_back( 0.0 ); }
 		net.train( instance, expected, result );

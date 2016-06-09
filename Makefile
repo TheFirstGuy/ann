@@ -1,29 +1,40 @@
 # This is a comment. All will run by default when make is called in the 
 # directory
+
+CC=g++
+
+CFLAGS= -std=c++0x -c
+
+SOURCES= main.o ANN.o Neuron.o Instance.o 
+
+
 all: ann
 
 test: testAnn
 
 # Compile with tester main file
-testAnn: tester.o ANN.o Neuron.o
-	g++ tester.o ANN.o Neuron.o -o testAnn
+testAnn: tester.o ANN.o Neuron.o Instance.o
+	$(CC) tester.o ANN.o Neuron.o Instance.o -o testAnn
 
 ann: main.o ANN.o Neuron.o
-	g++ main.o ANN.o Neuron.o -o ann
+	$(CC) $(SOURCES) -o ann
 	
 	#g++ Neuron.o -o neuron
 
 main.o: main.cpp
-	g++ -c main.cpp
+	$(CC) $(CFLAGS) main.cpp
 
 tester.o: tester.cpp
-	g++ -c tester.cpp
+	$(CC) $(CFLAGS) tester.cpp
 	
 ANN.o: ANN.cpp
-	g++ -c ANN.cpp
+	$(CC) $(CFLAGS) ANN.cpp
 	
 Neuron.o: Neuron.cpp
-					g++ -c Neuron.cpp
+	$(CC) $(CFLAGS) Neuron.cpp
+	
+Instance.o: Instance.cpp
+	$(CC) $(CFLAGS) Instance.cpp
 
 clean:
 					rm -rf *o ann
