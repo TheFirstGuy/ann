@@ -83,6 +83,7 @@ void ANN::activate(const std::vector<double>& instance, std::vector<double>& res
 			}
 		}
 	}
+	//std::cout << "DONE" << std::endl;
 }
 
 
@@ -105,6 +106,8 @@ void ANN::train(const std::vector<double>& instance, const std::vector<double>& 
 	bool deltaSet = false; // Flags for deltas
 	calculateError( expected, result, error );
 	//std::cout << "Error: " << error[0] << std::endl;
+	//std::cout << "Error: " << error[1] << std::endl;
+	//std::cout << "Error: " << error[2] << std::endl;
 	for( int i = network.size() - 1; i >= 0; i--){
 		// Get forward synapse before back prop
 		if( !deltaSet ){ 

@@ -8,10 +8,12 @@ Testing functions for Neuron and ANN.
 #include <vector>
 #include <math.h>
 #include <time.h>			// random
+#include <algorithm>	//random_shuffle
 #include "Neuron.h"
 #include "ANN.h"
 #include "Instance.h"
 #include "utils.h"
+#include "preprocessor.h"
 
 
 // Tests if randomD is within acceptable range
@@ -20,7 +22,7 @@ bool testRandom( int num ){
 	double result;
 	for(int i = 0; i < num; i++){
 		result = randD();
-		if(result > 1 || !isfinite(result) || result < 0 ){ 
+		if(result > 1 || !std::isfinite(result) || result < 0 ){ 
 			std::cout << "Random Failed. result: " << result << std::endl;
 			return false; 
 		}
@@ -37,13 +39,13 @@ bool testSigmoid( double num ){
 	while( x < num ){
 		result = sigmoid(x);
 		//std::cout << "X: " << x << " Result: " << result << std::endl;
-		if( result > 1 || !isfinite(result) || result < 0 ){
+		if( result > 1 || !std::isfinite(result) || result < 0 ){
 			std::cout << "Sigmoid Failed. result: " << result << " x: " << 
 			std::endl;
 			return false;
 		}
 		result = sigmoid(-x);
-		if( result > 1 || !isfinite(result) || result < 0 ){
+		if( result > 1 || !std::isfinite(result) || result < 0 ){
 			std::cout << "Sigmoid Failed. result: " << result << " x: " << 
 			std::endl;
 			return false;
@@ -70,7 +72,7 @@ bool testActivation(int num){
 		for( ; learningRate < 0.8; learningRate += 0.1){
 			Neuron n(size, learningRate);
 			result = n.activate( testInst );
-			if( result <= -1 || !isfinite(result) || result >= 1){
+			if( result <= -1 || !std::isfinite(result) || result >= 1){
 				std::cout << "Activation failed. Displaying input vector... \n";
 				for( int i = 0; i < testInst.size(); i++ ){
 					std::cout << testInst[i] << std::endl;
@@ -106,7 +108,7 @@ bool testBackProp(int num){
 			double oldSynapse = n.getSynapse(0);
 			result = n.backProp(testDelta, testFS);
 			//std::cout << result << std::endl;
-			if( !isfinite(result) || result == 0){
+			if( !std::isfinite(result) || result == 0){
 				std::cout << "Result: " << result << " Size: " << size << 
 				" Learning Rate: "<< learningRate << std::endl;
 				std::cout << "BackProp failed. Displaying delta vector... \n";
@@ -195,7 +197,7 @@ bool testANNActivate(int num, int range, int numLayers, int iterations, double l
 		net1.activate( instance, result1 );
 		net2.activate( instance, result2 );
 		for( int j = 0; j < result1.size(); ++j ){
-			if( result1[j] != result2[j] || !isfinite(result1[j]) ){
+			if( result1[j] != result2[j] || !std::isfinite(result1[j]) ){
 				std::cout << "Activation failed. Result1[" << j << "]: " << result1[j]
 				<< " Result2[" << j << "]: " << result2[j] << std::endl;
 				std::cout << "Net1 Stats \n";
@@ -245,7 +247,7 @@ bool testANNTrain(int num, int range, int numLayers, int iterations, double lear
 		net1.train( instance, expected ,result1 );
 		net2.train( instance, expected ,result2 );
 		for( int j = 0; j < result1.size(); ++j ){
-			if( result1[j] != result2[j] || !isfinite(result1[j])){
+			if( result1[j] != result2[j] || !std::isfinite(result1[j])){
 				std::cout << "Training failed. Result1[" << j << "]: " << result1[j]
 				<< " Result2[" << j << "]: " << result2[j] << std::endl;
 				std::cout << "Net1 Stats \n";
@@ -310,12 +312,14 @@ bool testInstances( int num, int dataSize, int eSize, int strLen ){
 		if( inst1.getFeatName(i) != inst2.getFeatName(i) ){
 			std::cout << "Features names do not match. Inst1: " << inst1.getFeatName(i) <<
 			" Inst2: " << inst2.getFeatName(i) << std::endl;
+			return false;
 		}
 	}
 	for( int i = 0; i < eSize; ++i ){
 		if(inst1.getClassName(i) != inst2.getClassName(i) ){
 			std::cout << "Class names do not match. Inst1: " << inst1.getClassName(i) <<
 			" Inst2: " << inst2.getClassName(i) << std::endl;
+			return false;
 		}
 	}
 	// Test in ANN
@@ -328,9 +332,39 @@ bool testInstances( int num, int dataSize, int eSize, int strLen ){
 	for( Instance& i : instances ){
 		net.train( i, result );
 	}
+	return true;
 }
 
-
+void testIris( int iterations, double learningRate, bool inputMode){
+	std::vector<Instance> instances;
+	if(readCSV( "iris.data", instances )){
+		// Set up network
+		std::vector<int> layers = { 15, 3 };
+		std::cout << "EXPRECTED" << instances[0].getExpectedSize() << std::endl;
+		ANN net( instances[0].getDataSize(), layers, learningRate );
+		// Train
+		for( int i = 0; i < iterations; ++i ){
+		std::random_shuffle( instances.begin(), instances.end() );
+			for( int j = 0; j < instances.size(); ++j ){
+				std::vector<double> result;
+				net.train(instances[j], result );
+				if( i % (iterations/100) == 0  && j == 0){
+					std::cout << "Iteration: " << i << std::endl;
+					std::cout << "Training Instance: " << j << std::endl;
+					for( int k = 0; k < instances[j].getDataSize(); ++k ){
+						std::cout << (*instances[j].features)[k] << ": " << (*instances[j].data)[k] <<
+						 std::endl;
+					}
+					for( int k = 0; k < instances[j].getExpectedSize(); ++k ){
+						std::cout << (*instances[j].classes)[k] << ": " << (*instances[j].expected)[k] << 
+						" Result: " << result[k] <<  std::endl;
+					}
+				}
+			}
+	 	}
+ 	}
+ 	else{ std::cout << "Failed to read file." << std::endl; }
+}
 
 int main(){
 	srand(time(NULL));
@@ -340,21 +374,23 @@ int main(){
 	std::cout << "Testing sigmoid with 10000 numbers." << std::endl;
 	testSigmoid( 10000 );
 	std::cout << "Testing activation up to size 50." << std::endl;
-	testActivation( 50 );
+	//testActivation( 50 );
 	std::cout << "Testing back prop up to size 50." << std::endl;
-	testBackProp(50);
+	//testBackProp(50);
 	std::cout << "Testing ANN constructors up to 5 layers, with up to 50 neurons per layer." << std::endl;
-	testANNConstructors( 50, 2, 5 );
+	//testANNConstructors( 50, 2, 5 );
 	std::cout << "Testing ANN activation up to 5 layers, with up to 50 neurons per layer." << 
 	" With up to 100 iterations. "<< std::endl;
-	testANNActivate( 50, 1, 5, 100, 0.4 );
+	//testANNActivate( 50, 1, 5, 100, 0.4 );
 	std::cout << "Testing ANN training up to 5 layers, with up to 50 neurons per layer." << 
 	" With up to 100 iterations. "<< std::endl;
-	testANNTrain(50, 1, 5, 100, 0.4 );
+	//testANNTrain(50, 1, 5, 100, 0.4 );
 	std::cout << "Testing XOR for 100000 iterations and 0.2 learning rate." << std::endl;
-	trainXOR( 100000, 0.2 );
+	trainXOR( 1000000, 0.2 );
 	std::cout << "Testing 100 instances and a 3 layer ANN with instances." << std::endl; 
-	testInstances( 100, 15, 3, 8 );
+	//testInstances( 100, 15, 3, 8 );
+	std::cout << "Testing Iris with up to 10000 iterations and 0.2 learning rate. " << std::endl;
+	//testIris( 10000, 0.1, false );
 	std::cout << "Test complete." << std::endl;
 	return 0;
 }

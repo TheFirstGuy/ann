@@ -82,7 +82,7 @@ size_t Instance::getDataSize() const{
 	return data->size();
 }
 
-size_t Instance::getExpectSize() const{
+size_t Instance::getExpectedSize() const{
 	return expected->size();
 }
 

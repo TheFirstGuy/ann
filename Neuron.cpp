@@ -29,7 +29,7 @@ Neuron::Neuron(const int& numSynapse, const double& learningRate )
 
 double Neuron::activate(const std::vector<double>& inputs){
 	// Check if inputs are correct size	
-	if( inputs.size() != synapse.size() ){ return -1; }	
+	if( inputs.size() != synapse.size() ){ return -1; };
 	lastInputs = inputs;
 	double sum = bias;
 	for( int i = 0; i < inputs.size(); i++ ){

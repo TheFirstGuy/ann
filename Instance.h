@@ -41,7 +41,7 @@ struct Instance{
 		size_t getDataSize() const;
 		
 		// Return expected size.
-		size_t getExpectSize() const;
+		size_t getExpectedSize() const;
 	
 		// Returns name of feature at given index.
 		std::string getFeatName( const int& index ) const;

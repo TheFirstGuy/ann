@@ -28,3 +28,5 @@ std::string randS(const size_t& size);
 // instances: input/output vector of instances
 void genRandInsts( const int& num, const int& dataSize, const int& eSize,
 const int& strLen, std::vector<Instance>& instances );
+
+
