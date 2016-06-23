@@ -9,6 +9,14 @@ Implementation of Utility functions for ANN.
 #include <memory>			// smart pointers
 #include <vector>
 #include "Instance.h"
+#include <math.h>
+#include "utils.h"
+
+FOne::FOne() {
+	significance_level = 0.05f;
+	alpha = significance_level;
+	beta = sqrtf((1.00f / alpha) - 1.00f);
+}
 
 double randD(){
 	return (double)rand() / RAND_MAX;
