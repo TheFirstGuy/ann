@@ -8,6 +8,11 @@ Utility functions for ANN.
 #include <vector>
 #include "Instance.h"
 
+//F1 Score class, meant to hold variables and functions needed for calculating F1 score
+class FOne {
+	int true_positive, false_positive, true_negative, false_negative;
+};
+
 // Returns random double from (0 to 1)
 double randD();
 
