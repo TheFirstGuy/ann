@@ -5,6 +5,9 @@ Utility functions for ANN.
 */
 
 
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <vector>
 #include "Instance.h"
 
@@ -29,4 +32,4 @@ std::string randS(const size_t& size);
 void genRandInsts( const int& num, const int& dataSize, const int& eSize,
 const int& strLen, std::vector<Instance>& instances );
 
-
+#endif
