@@ -63,3 +63,14 @@ const int& strLen, std::vector<Instance>& instances ){
 		instances.push_back( Instance( randS(strLen), data, expected, features, classes ));
 	}
 }
+
+std::string toLower( const std::string& str ){
+	std::string result(str.length(), '0');
+	for( std::size_t i = 0; i < str.length(); ++i ){
+		if( str[i] > 64 && str[i] < 91 ){
+				result[i] = str[i] + ( 'z' - 'Z' );
+		}
+		else { result[i] = str[i]; }
+	} 
+	return result;
+}

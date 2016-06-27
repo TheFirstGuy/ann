@@ -9,6 +9,7 @@ Utility functions for ANN.
 #define UTILS_H
 
 #include <vector>
+#include <string>
 #include "Instance.h"
 
 // Returns random double from (0 to 1)
@@ -31,5 +32,8 @@ std::string randS(const size_t& size);
 // instances: input/output vector of instances
 void genRandInsts( const int& num, const int& dataSize, const int& eSize,
 const int& strLen, std::vector<Instance>& instances );
+
+// Returns a copy of a string in lower case 
+std::string toLower( const std::string& str );
 
 #endif

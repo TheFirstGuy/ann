@@ -15,6 +15,9 @@ Also modify the help function.
 #include <vector>
 #include <string>
 
+// List of commands
+std::vector<std::string> CMDS = { "ann", "set", "help" };
+
 // Types of arguments
 enum A_TYPE { CMD, FLAG, DSC, VAL }
 
@@ -26,6 +29,7 @@ struct Arg{
 // Takes a string (user input) and parses it into a vector of arguments.
 // Returns -1 if the input cannot be parsed correctly.
 int parseArgs( const std::string& str,  std::vector<Arg>& args );
+
 
 // Takes a vector of arguments and attempts to execute the command.
 // If no valid command found, returns -1.
