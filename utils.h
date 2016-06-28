@@ -18,8 +18,9 @@ Utility functions for ANN.
 class FOne {
 public:
 	FOne();
+	int calculateFScore();
 private:
-	int true_positive, false_positive, true_negative, false_negative;
+	int true_positive, false_positive, true_negative, false_negative, fscore;
 	float significance_level, alpha, beta;
 };
 

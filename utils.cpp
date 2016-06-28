@@ -16,7 +16,26 @@ FOne::FOne() {
 	significance_level = 0.05f;
 	alpha = significance_level;
 	beta = sqrtf((1.00f / alpha) - 1.00f);
+	true_negative = 0;
+	true_positive = 0;
+	false_negative = 0;
+	false_positive = 0;
 }
+
+int FOne::calculateFScore()
+{
+	if (((1 + beta * beta) * true_positive + (beta * beta) * false_negative + false_positive) > 0) {
+
+		fscore = (1 + beta * beta) * true_positive /
+			((1 + beta * beta) * true_positive + (beta * beta) * false_negative + false_positive);
+
+	}
+	else {
+		fscore = -1;
+	}
+	return fscore;
+}
+
 
 double randD(){
 	return (double)rand() / RAND_MAX;
@@ -33,11 +52,12 @@ char randC(){
 
 // Returns random string
 std::string randS(const size_t& size){
-	char temp [size];
+	std::vector<char> temp(size);
+	//char temp [size];
 	for(int i = 0; i < size; ++i){
 		temp[i] = randC();
 	}
-	return std::string(temp, size);
+	return std::string(temp.data(), size);
 }
 
 // Generates random instances.
