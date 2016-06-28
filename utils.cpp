@@ -1,6 +1,6 @@
 /*
 6/9/2016
-Programmer: Urs Evora
+Programmer: Urs Evora & Stefan Cherubin
 Implementation of Utility functions for ANN.
 */
 
@@ -22,18 +22,18 @@ FOne::FOne() {
 	false_positive = 0;
 }
 
-int FOne::calculateFScore()
+float FOne::calculateFScore()
 {
 	if (((1 + beta * beta) * true_positive + (beta * beta) * false_negative + false_positive) > 0) {
 
-		fscore = (1 + beta * beta) * true_positive /
+		total_accuracy = (1 + beta * beta) * true_positive /
 			((1 + beta * beta) * true_positive + (beta * beta) * false_negative + false_positive);
 
 	}
 	else {
-		fscore = -1;
+		total_accuracy = -1.0;
 	}
-	return fscore;
+	return total_accuracy;
 }
 
 

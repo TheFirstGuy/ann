@@ -1,6 +1,6 @@
 /*
 6/9/2016
-Programmer: Urs Evora
+Programmer: Urs Evora & Stefan Cherubin
 Utility functions for ANN.
 */
 
@@ -24,8 +24,8 @@ public:
 	FOne();
 	int calculateFScore();
 private:
-	int true_positive, false_positive, true_negative, false_negative, fscore;
-	float significance_level, alpha, beta;
+	int true_positive, false_positive, true_negative, false_negative;
+	float significance_level, alpha, beta, total_accuracy;
 };
 
 // Returns random double from (0 to 1)
