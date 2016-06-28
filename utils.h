@@ -5,7 +5,11 @@ Utility functions for ANN.
 */
 
 
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <vector>
+#include <string>
 #include "Instance.h"
 
 //F1 Score class, meant to hold variables and functions needed for calculating F1 score
@@ -45,4 +49,7 @@ std::string randS(const size_t& size);
 void genRandInsts( const int& num, const int& dataSize, const int& eSize,
 const int& strLen, std::vector<Instance>& instances );
 
+// Returns a copy of a string in lower case 
+std::string toLower( const std::string& str );
 
+#endif
