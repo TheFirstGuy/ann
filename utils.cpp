@@ -20,8 +20,18 @@ FOne::FOne() {
 	true_positive = 0;
 	false_negative = 0;
 	false_positive = 0;
+	total_accuracy = 0.0f;
 }
-
+FOne::FOne(float sig_level, int tpositive, int fpositive, int tnegative, int fnegative) {
+	significance_level = sig_level;
+	alpha = significance_level;
+	beta = sqrtf((1.00f / alpha) - 1.00f);
+	true_negative = tnegative;
+	true_positive = tpositive;
+	false_negative = fnegative;
+	false_positive = fpositive;
+	total_accuracy = 0.0f;
+}
 float FOne::calculateFScore()
 {
 	if (((1 + beta * beta) * true_positive + (beta * beta) * false_negative + false_positive) > 0) {

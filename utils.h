@@ -22,6 +22,7 @@ Utility functions for ANN.
 class FOne {
 public:
 	FOne();
+	FOne(float sig_level, int tpositive, int fpositive, int tnegative, int fnegative);
 	int calculateFScore();
 private:
 	int true_positive, false_positive, true_negative, false_negative;
