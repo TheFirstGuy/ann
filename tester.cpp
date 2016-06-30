@@ -9,6 +9,8 @@ Testing functions for Neuron and ANN.
 #include <math.h>
 #include <time.h>			// random
 #include <algorithm>	//random_shuffle
+
+#include "shell.h"
 #include "Neuron.h"
 #include "ANN.h"
 #include "Instance.h"
@@ -366,6 +368,42 @@ void testIris( int iterations, double learningRate, bool inputMode){
  	else{ std::cout << "Failed to read file." << std::endl; }
 }
 
+/* Tests arg parser for shell. Takes user input endlessly and prints out
+the parsed arguments until user enters an empty string or an error occurs.
+*/
+void testArgParser(){
+	std::string uin;
+	std::vector<Arg> args;
+	std::getline(std::cin, uin);
+	while( uin != "" ){
+		if(parseArgs(uin, args) < 0 ){ break; }
+		for( Arg& a : args ){
+			switch( a.type ){
+				case CMD:
+					std::cout << "CMD: ";
+					break;
+				case FLAG:
+					std::cout << "FLAG: ";
+					break;
+				case DSC:
+					std::cout << "DSC: ";
+					break;
+				case VAL:
+					std::cout << "VAL: ";
+					break;
+				default:
+					std::cout << "UNKNOWN: ";
+					break;	
+			}
+			std::cout << a.value << std::endl;
+		}
+		args.clear();
+		uin.clear();
+		std::getline(std::cin, uin);
+	}
+}
+
+
 int main(){
 	srand(time(NULL));
 	std::cout << "Testing Neuron..." << std::endl;
@@ -385,12 +423,14 @@ int main(){
 	std::cout << "Testing ANN training up to 5 layers, with up to 50 neurons per layer." << 
 	" With up to 100 iterations. "<< std::endl;
 	//testANNTrain(50, 1, 5, 100, 0.4 );
-	std::cout << "Testing XOR for 100000 iterations and 0.2 learning rate." << std::endl;
-	trainXOR( 1000000, 0.2 );
-	std::cout << "Testing 100 instances and a 3 layer ANN with instances." << std::endl; 
+	//std::cout << "Testing XOR for 100000 iterations and 0.2 learning rate." << std::endl;
+	//trainXOR( 1000000, 0.2 );
+	//std::cout << "Testing 100 instances and a 3 layer ANN with instances." << std::endl; 
 	//testInstances( 100, 15, 3, 8 );
-	std::cout << "Testing Iris with up to 10000 iterations and 0.2 learning rate. " << std::endl;
+	//std::cout << "Testing Iris with up to 10000 iterations and 0.2 learning rate. " << std::endl;
 	//testIris( 10000, 0.1, false );
+	std::cout << "Testing arguement parser. Enter empty string to end test." << std::endl;
+	testArgParser();
 	std::cout << "Test complete." << std::endl;
 	return 0;
 }

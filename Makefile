@@ -13,8 +13,8 @@ all: ann
 test: testAnn
 
 # Compile with tester main file
-testAnn: tester.o ANN.o Neuron.o Instance.o utils.o preprocessor.o
-	$(CC) tester.o ANN.o Neuron.o Instance.o utils.o preprocessor.o -o testAnn
+testAnn: tester.o shell.o ANN.o Neuron.o Instance.o utils.o preprocessor.o
+	$(CC) tester.o shell.o ANN.o Neuron.o Instance.o utils.o preprocessor.o -o testAnn
 
 ann: main.o ANN.o Neuron.o
 	$(CC) $(SOURCES) -o ann
@@ -26,6 +26,9 @@ main.o: main.cpp
 
 tester.o: tester.cpp
 	$(CC) $(CFLAGS) tester.cpp
+	
+shell.o: shell.cpp
+	$(CC) $(CFLAGS) shell.cpp
 	
 ANN.o: ANN.cpp
 	$(CC) $(CFLAGS) ANN.cpp
