@@ -24,6 +24,10 @@ public:
 	FOne();
 	FOne(float sig_level, int tpositive, int fpositive, int tnegative, int fnegative);
 	int calculateFScore();
+	void incrementTPositive();
+	void incrementFPositive();
+	void incrementTNegative();
+	void incrementFNegative();
 private:
 	int true_positive, false_positive, true_negative, false_negative;
 	float significance_level, alpha, beta, total_accuracy;
@@ -52,5 +56,11 @@ const int& strLen, std::vector<Instance>& instances );
 
 // Returns a copy of a string in lower case 
 std::string toLower( const std::string& str );
-
+//TODO: add function to check results of classified data.
+//Correctly classified and un-classified data should be in two seperate containers.
+//Sweep each container, then update the needed variables for calculating FScore accordingly.
+//Number of false positives and false negatives will be determined by the significance level and number of data points in each container
+//A significance level of 0.05 should mean that the bottom 2.5% of the positive container should be false positive 
+//and top 2.5% of negative container should be false negatives.
+//I believe that its 2.5% since there are two sets to work with
 #endif

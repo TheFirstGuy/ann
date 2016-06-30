@@ -45,6 +45,25 @@ float FOne::calculateFScore()
 	}
 	return total_accuracy;
 }
+void FOne::incrementTPositive()
+{
+	true_positive++;
+}
+
+void FOne::incrementFPositive()
+{
+	false_positive++;
+}
+
+void FOne::incrementTNegative()
+{
+	true_negative++;
+}
+
+void FOne::incrementFNegative()
+{
+	false_negative++;
+}
 
 
 double randD(){
