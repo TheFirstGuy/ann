@@ -16,10 +16,10 @@ Also modify the help function.
 #include <string>
 
 // List of commands
-std::vector<std::string> CMDS = { "ann", "set", "help" };
+//std::vector<std::string> CMDS = { "ann", "set", "help" };
 
 // Types of arguments
-enum A_TYPE { CMD, FLAG, DSC, VAL }
+enum A_TYPE { CMD, FLAG, DSC, VAL };
 
 struct Arg{
 	A_TYPE type;
