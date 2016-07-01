@@ -32,9 +32,11 @@ int parseArgs( const std::string& str,  std::vector<Arg>& args ){
 			}
 			else{
 				temp.type = VAL;
-				temp.value = str.substr( bPos + 1, (fPos-bPos) );
+				temp.value = str.substr( bPos + 1, (fPos-bPos) - 1 );
 				args.push_back(temp);
-				bPos = fPos + 1;
+				// seek next word
+				++fPos;
+				while( fPos + 1 < str.length() && str[fPos] == space ){ bPos = ++fPos; }
 			}
 		}
 		else if( str[fPos] == space && bPos != fPos){
@@ -95,4 +97,38 @@ int parseArgs( const std::string& str,  std::vector<Arg>& args ){
 			}
 	}
 	return 0;
+}
+
+
+int executeCmd( const std::vector<Arg>& args ){
+	if( args.size() <= 0 ){
+	 	std::cout << "No arguments provided." << std::endl;
+	 	return -1; 
+	}
+	if( args[0].type != CMD ){
+		std::cout << "No command found." << std::endl;
+		return -1;
+	}
+	std::string cmd = toLower(args[0].value);
+	switch(cmd){
+		case "ann":
+			return annCmd(args);
+		case "set":
+			return setCmd(args);
+		case "help":
+			return helpCmd(args);
+		case "save":
+			return saveCmd(args);
+		default:
+			std::cout << "No command: " << args[0].value << " found." << std::endl;
+			break;	
+	}
+}
+
+int annCmd( const std::vector<Arg>& args ){
+	if( args.size() < 2 ){
+		std::cout << "No flag provided." << std::endl;
+		return -1;
+	}
+	if( args[1].type != FLAG ){
 }
