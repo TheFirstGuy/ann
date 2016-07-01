@@ -16,7 +16,7 @@ Also modify the help function.
 #include <string>
 
 // List of commands
-//std::vector<std::string> CMDS = { "ann", "set", "help" };
+std::vector<std::string> COMMANDS = { "ann", "set", "help", "save" };
 
 // Types of arguments
 enum A_TYPE { CMD, FLAG, DSC, VAL };
@@ -37,7 +37,9 @@ int executeCmd( const std::vector<Arg>& args );
 
 /* The ANN command allows for the creation and modification of anns. 
 FLAGS:
--c [name=], Creates a new ann with provided name. If no name is provided, 
+-a [name=] [filename=]*, Activates on a ann with provided name. If no file is provided
+to read from, the user will be prompted to manually enter values. 
+-c [name=]*, Creates a new ann with provided name. If no name is provided, 
 a default name will be provided E.g. "ann1".
 -t [name=] [set=] [itr=] [acc=], Trains a named ann on a test set. Name is 
 the name of the ann. Set is the name of the training set. Itr is the max number
@@ -47,6 +49,14 @@ iterations. acc is the desired accuracy.
 If arguments are not formatted correctly, returns -1.
 */
 int annCmd( const std::vector<Arg>& args );
+
+// ANN helper functions
+int annActivate( const std::vector<Arg>& args );
+int annCreate( const std::vector<Arg>& args );
+int annTrain( const std::vector<Arg>& args );
+int annDisplay( const std::vector<Arg>& args );
+int annRemove( const std::vector<Arg>& args );
+
 
 /* The set command allows for the creation and deletion of training, testing,
 and general sets.
@@ -64,4 +74,12 @@ the second argument should be a command which is to be described.
 */
 
 int helpCmd( const std::vector<Arg>& args );
+
+/* The save command allows for ANNs and results to be saved to a JSON file.
+FLAGS:
+-a [filename=], Saves all anns to the same file named.
+[name=] [filename=], Saves a specific ann to specified file.
+*/
+
+int saveCmd( const std::vector<Arg>& args );
 #endif
