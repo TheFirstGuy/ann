@@ -5,6 +5,8 @@ Programmer: Urs Evora
 
 #include "shell.h"
 #include "utils.h"		// toLower
+#include "ANN.h"
+#include "Instance.h"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -101,7 +103,7 @@ int parseArgs( const std::string& str,  std::vector<Arg>& args ){
 }
 
 
-int executeCmd( const std::vector<Arg>& args ){
+int executeCmd( const std::vector<Arg>& args, ShellMem& memory ){
 	if( args.size() <= 0 ){
 	 	std::cout << "No arguments provided." << std::endl;
 	 	return -1; 
@@ -115,20 +117,40 @@ int executeCmd( const std::vector<Arg>& args ){
 		std::cout << "Not all commands initalized." << std::endl;
 		return -1;
 	}
+	// Match first argument to available commands
 	std::string cmd = toLower(args[0].value);
 	for( size_t i = 0; i < COMMANDS.size(); ++i ){
 		if( cmd == COMMANDS[i] ){
-			return COMMAND_FUNCS[i](args);
+			return COMMAND_FUNCS[i](args, memory);
 		}
 	}
 	std::cout << "No command: " << args[0].value << " found." << std::endl;
 
 }
 
-int annCmd( const std::vector<Arg>& args ){
-	if( args.size() < 2 ){
+int annCmd( const std::vector<Arg>& args, ShellMem& memory){
+	if( args.size() < 2 || args[1].type != FLAG ){
 		std::cout << "No flag provided." << std::endl;
 		return -1;
 	}
-	if( args[1].type != FLAG ){}
+	if( args[1].value == "-a" ){ annActivate( args, memory ); }
+	else if( args[1].value == "-c"){ annCreate( args, memory.anns ); }
+	else if( args[1].value == "-t"){ annTrain( args, memory ); }
+	else if( args[1].value == "-d"){ annDisplay( args, memory.anns ); }
+	else if( args[1].value == "-rm"){ annRemove( args, memory.anns ); }
+	return 1;
 }
+
+// ANN helper functions
+int annActivate( const std::vector<Arg>& args, ShellMem& memory ){}
+int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
+int annTrain( const std::vector<Arg>& args, ShellMem& memory ){}
+int annDisplay( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
+int annRemove( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
+
+int setCmd( const std::vector<Arg>& args, ShellMem& memory ){}
+
+int helpCmd( const std::vector<Arg>& args, ShellMem& memory ){}
+
+int saveCmd( const std::vector<Arg>& args, ShellMem& memory ){}
+
