@@ -15,8 +15,7 @@ Also modify the help function.
 #include <vector>
 #include <string>
 
-// List of commands
-std::vector<std::string> COMMANDS = { "ann", "set", "help", "save" };
+
 
 // Types of arguments
 enum A_TYPE { CMD, FLAG, DSC, VAL };
@@ -25,6 +24,9 @@ struct Arg{
 	A_TYPE type;
 	std::string value;
 };
+
+
+
 
 // Takes a string (user input) and parses it into a vector of arguments.
 // Returns -1 if the input cannot be parsed correctly.
@@ -82,4 +84,28 @@ FLAGS:
 */
 
 int saveCmd( const std::vector<Arg>& args );
+
+// Commands
+
+const std::vector<std::string> COMMANDS = {
+	"ann",
+	"set",
+	"help",
+	"save"
+};
+
+// Function pointers
+int (*COMMAND_FUNCS[])(const std::vector<Arg>& ) = {
+	&annCmd,
+	&setCmd,
+	&helpCmd,
+	&saveCmd
+};
+
+/*const std::vector<void (*)(const std::vector<Arg>&)> COMMAND_FUNCS = {
+	&annCmd,
+	&setCmd,
+	&helpCmd,
+	&saveCmd
+};*/
 #endif

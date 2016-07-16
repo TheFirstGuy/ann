@@ -92,8 +92,9 @@ int parseArgs( const std::string& str,  std::vector<Arg>& args ){
 				args.push_back(temp);
 			}
 			else{
-				std::cout << "Could not identify argument: " << subStr << std::endl;
-				return -1;
+				temp.type = VAL;
+				temp.value = subStr;
+				args.push_back(temp);
 			}
 	}
 	return 0;
@@ -109,20 +110,19 @@ int executeCmd( const std::vector<Arg>& args ){
 		std::cout << "No command found." << std::endl;
 		return -1;
 	}
-	std::string cmd = toLower(args[0].value);
-	switch(cmd){
-		case "ann":
-			return annCmd(args);
-		case "set":
-			return setCmd(args);
-		case "help":
-			return helpCmd(args);
-		case "save":
-			return saveCmd(args);
-		default:
-			std::cout << "No command: " << args[0].value << " found." << std::endl;
-			break;	
+	// Check if all commands have function pointers
+	if( (sizeof(COMMAND_FUNCS)/sizeof(COMMAND_FUNCS[0]) )!= COMMANDS.size() ){
+		std::cout << "Not all commands initalized." << std::endl;
+		return -1;
 	}
+	std::string cmd = toLower(args[0].value);
+	for( size_t i = 0; i < COMMANDS.size(); ++i ){
+		if( cmd == COMMANDS[i] ){
+			return COMMAND_FUNCS[i](args);
+		}
+	}
+	std::cout << "No command: " << args[0].value << " found." << std::endl;
+
 }
 
 int annCmd( const std::vector<Arg>& args ){
@@ -130,5 +130,5 @@ int annCmd( const std::vector<Arg>& args ){
 		std::cout << "No flag provided." << std::endl;
 		return -1;
 	}
-	if( args[1].type != FLAG ){
+	if( args[1].type != FLAG ){}
 }
