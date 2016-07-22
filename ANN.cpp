@@ -12,8 +12,10 @@ Implementation file for ANN.
 #include "Neuron.h"
 #include "Instance.h"
 
-ANN::ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate)
-	:numIn(numFeatures), learningRate(learningRate),numOut(layers[layers.size() - 1]){
+ANN::ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate,
+const std::string& name  = "UNNAMED")
+	:numIn(numFeatures), learningRate(learningRate),numOut(layers[layers.size() - 1]),
+	name(name){
 	// Initialize layers of the network
 	for( int i = 0; i < layers.size(); i++ ){
 		std::vector<Neuron*> layer;
@@ -187,6 +189,10 @@ void ANN::calculateError( const std::vector<double>& expected, const std::vector
 	for(int i = 0; i < expected.size(); ++i ){
 		error.push_back( -(expected[i] - outputs[i]));
 	}	
+}
+
+std::string ANN::getName() const {
+	return name;
 }
 
 int ANN::getNumOut() const{

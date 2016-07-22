@@ -142,7 +142,38 @@ int annCmd( const std::vector<Arg>& args, ShellMem& memory){
 }
 
 // ANN helper functions
-int annActivate( const std::vector<Arg>& args, ShellMem& memory ){}
+int annActivate( const std::vector<Arg>& args, ShellMem& memory ){
+	if( args.size() > 2 ) {
+		if( arg[2].type != VAL ){
+			std::cout << "No Ann name provided." << std::endl;
+			return -1;
+		}
+		ANN ann = getThing( args[2].value, memory.anns );
+		if( ann == NULL ){ 
+			std::cout << "No Ann with name " << args[2].value << " found." << std::endl;
+			return -1;
+		}
+		// Check if file name is provided.
+		if( args.size() > 3 ){
+			if( args[3].type == VAL ){
+				InstanceSet set = getThing( args[3].value, memory.sets );
+				if( set == NULL ){
+					std::cout << "No set with name " << args[3].value << "found." << std::endl;
+					return -1;
+				}
+				// Check if instance set matches ann
+				
+				for( Instance& i : set.instances ){
+					ann
+				}	
+			} 
+		}
+	}
+	else{
+		std::cout << "Incorrect number of argments." << std::endl;
+		return
+	}
+}
 int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
 int annTrain( const std::vector<Arg>& args, ShellMem& memory ){}
 int annDisplay( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
@@ -153,4 +184,13 @@ int setCmd( const std::vector<Arg>& args, ShellMem& memory ){}
 int helpCmd( const std::vector<Arg>& args, ShellMem& memory ){}
 
 int saveCmd( const std::vector<Arg>& args, ShellMem& memory ){}
+
+auto& getThing( const std::string& name, std::vector<auto>& objs ){
+	for( size_t i = 0; i < objs.size(); ++i ){
+		if(objs[i].getName() == name ){
+			return objs[i];
+		}
+	}
+	return NULL;
+}
 

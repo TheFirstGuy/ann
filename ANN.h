@@ -18,7 +18,8 @@ public:
 	// Layers: The size of passed vector determines number of layers. Integers
 	// provided in each index determine number of neurons in each layer. Output
 	// layer is last layer in vector.
-	ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate);
+	ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate,
+	const std::string& name  = "UNNAMED");
 	
 	// Copy constructor
 	ANN( const ANN& rhs );
@@ -43,6 +44,12 @@ public:
 	// definitions.
 	void activate(const std::vector<double>& instance, std::vector<double>& result);
 
+	// Checks if the instance fits Instance set
+	bool checkSet( const&  Instance ) const;
+		
+	// Returns name of the ANN
+	std::string getName() const;
+	
 	// Returns number of output neurons.
 	int getNumOut() const;
 	// Returns number of input neurons.
@@ -60,6 +67,7 @@ private:
 	const int numIn;
 	const int numOut;
 	const double learningRate;
+	const std::string name;
 	std::vector<std::vector<Neuron*> > network;
 	
 	// Returns layer's outputs. Clears result vector before adding data.

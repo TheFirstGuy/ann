@@ -110,10 +110,9 @@ int (*COMMAND_FUNCS[])(const std::vector<Arg>&, ShellMem& ) = {
 	&saveCmd
 };
 
-/*const std::vector<void (*)(const std::vector<Arg>&)> COMMAND_FUNCS = {
-	&annCmd,
-	&setCmd,
-	&helpCmd,
-	&saveCmd
-};*/
+/* Returns object by reference which matches name passed in. Returns Null if no match found. 
+Object must have getName() method which returns a string member */
+auto& getThing( const std::string& name, std::vector<auto>& objs );
+
+
 #endif
