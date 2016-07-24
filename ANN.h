@@ -45,7 +45,7 @@ public:
 	void activate(const std::vector<double>& instance, std::vector<double>& result);
 
 	// Checks if the instance fits Instance set
-	bool checkSet( const&  Instance ) const;
+	bool checkInstance( const Instance& inst ) const;
 		
 	// Returns name of the ANN
 	std::string getName() const;

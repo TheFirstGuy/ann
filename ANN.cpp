@@ -158,6 +158,10 @@ void ANN::train(const std::vector<double>& instance, const std::vector<double>& 
 void ANN::train(const Instance& instance, std::vector<double>& result ){
 	train( *(instance.data), *(instance.expected), result );
 }
+
+bool ANN::checkInstance( const Instance& inst ) const{
+	return inst.classes->size() == this.getNumOut() && inst.data->size() == this.getNumIn();
+}
 	
 void ANN::getOutputs( const int& layer, std::vector<double>& result ) const{
 	result.clear();

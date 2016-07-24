@@ -74,3 +74,7 @@ std::string toLower( const std::string& str ){
 	} 
 	return result;
 }
+
+void printResult( const vector<double>& result, const Instance& inst, ostream& os ){
+
+}

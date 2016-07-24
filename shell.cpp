@@ -10,6 +10,7 @@ Programmer: Urs Evora
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 
 
@@ -125,7 +126,7 @@ int executeCmd( const std::vector<Arg>& args, ShellMem& memory ){
 		}
 	}
 	std::cout << "No command: " << args[0].value << " found." << std::endl;
-
+	return -1;
 }
 
 int annCmd( const std::vector<Arg>& args, ShellMem& memory){
@@ -154,6 +155,7 @@ int annActivate( const std::vector<Arg>& args, ShellMem& memory ){
 			return -1;
 		}
 		// Check if file name is provided.
+		std::ostream os = std::cout;
 		if( args.size() > 3 ){
 			if( args[3].type == VAL ){
 				InstanceSet set = getThing( args[3].value, memory.sets );
@@ -162,16 +164,50 @@ int annActivate( const std::vector<Arg>& args, ShellMem& memory ){
 					return -1;
 				}
 				// Check if instance set matches ann
-				
+				if( !ann.checkInstance( set.instances[0] ){
+					std::cout << "Provided set: " << args[3].value << " does not fit ann: " << 
+					args[2].value << std::endl;
+					return -1;
+				}
+				std::vector<double> result;
 				for( Instance& i : set.instances ){
-					ann
+					ann.activate( i, result );
+					
 				}	
+			}
+			// Check for redirect
+			// Change check of size.
+			else if( args[3].type == REDIR ){
+				if( args.size() > 4 ){
+					if( args[4].type == VAL ){
+						// Re do this
+						ofstream of;
+						of.open(args[4].value);
+						if( of.is_open() ){ os.rdbuf(of); }
+						else{ 
+							std::cout << "Error opening output file." << std::endl; 
+							return -1;
+						}
+					}
+					else{
+						std::cout << "No output file provided." << std::endl;
+						return -1;
+					}
+				}
+				else{
+					std::cout << "Incorrect number of arguments." << std::endl;
+					return -1;
+				}
 			} 
+		}
+		else{
+			std::vector<double> data;
+			for( 
 		}
 	}
 	else{
 		std::cout << "Incorrect number of argments." << std::endl;
-		return
+		return -1;
 	}
 }
 int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
