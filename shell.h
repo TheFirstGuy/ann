@@ -5,7 +5,8 @@ Shell program header file. This handles user input and is the main
 interface. User entered input first enters the parseArgs function. 
 A vector of arguments is then passed to the executeCmd function, which
 then calls the appropriate command function. To add a command, simiply 
-create the command function and modify the executeCmd function approprately.
+create the command function, add the command string and function pointer
+to COMMANDS and COMMAND_FUNCS respectively.
 Also modify the help function.
 */
 
@@ -14,9 +15,10 @@ Also modify the help function.
 
 #include <vector>
 #include <string>
+#include "ANN.h"
+#include "Instance.h"
 
-// List of commands
-std::vector<std::string> COMMANDS = { "ann", "set", "help", "save" };
+
 
 // Types of arguments
 enum A_TYPE { CMD, FLAG, DSC, VAL };
@@ -25,6 +27,14 @@ struct Arg{
 	A_TYPE type;
 	std::string value;
 };
+
+struct ShellMem{
+	std::vector<ANN> anns;
+	std::vector<InstanceSet> sets;
+};
+
+
+
 
 // Takes a string (user input) and parses it into a vector of arguments.
 // Returns -1 if the input cannot be parsed correctly.
@@ -48,14 +58,14 @@ iterations. acc is the desired accuracy.
 -rm [name=], Deletes the given ann.
 If arguments are not formatted correctly, returns -1.
 */
-int annCmd( const std::vector<Arg>& args );
+int annCmd( const std::vector<Arg>& args , ShellMem& memory);
 
 // ANN helper functions
-int annActivate( const std::vector<Arg>& args );
-int annCreate( const std::vector<Arg>& args );
-int annTrain( const std::vector<Arg>& args );
-int annDisplay( const std::vector<Arg>& args );
-int annRemove( const std::vector<Arg>& args );
+int annActivate( const std::vector<Arg>& args, ShellMem& memory );
+int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns );
+int annTrain( const std::vector<Arg>& args, ShellMem& memory );
+int annDisplay( const std::vector<Arg>& args, std::vector<ANN>& anns );
+int annRemove( const std::vector<Arg>& args, std::vector<ANN>& anns );
 
 
 /* The set command allows for the creation and deletion of training, testing,
@@ -66,14 +76,14 @@ and will default to the filename (minus extension) if not provided.
 -rm [name=], Deletes given set from memory.
 If arguments are not formatted correctly, returns -1.
 */
-int setCmd( const std::vector<Arg>& args );
+int setCmd( const std::vector<Arg>& args , ShellMem& memory);
 
 /* The help command prints descriptive information on shell commands.
 If just 'help' is entered a list of all commands will be printed. Otherwise,
 the second argument should be a command which is to be described.
 */
 
-int helpCmd( const std::vector<Arg>& args );
+int helpCmd( const std::vector<Arg>& args, ShellMem& memory );
 
 /* The save command allows for ANNs and results to be saved to a JSON file.
 FLAGS:
@@ -81,5 +91,28 @@ FLAGS:
 [name=] [filename=], Saves a specific ann to specified file.
 */
 
-int saveCmd( const std::vector<Arg>& args );
+int saveCmd( const std::vector<Arg>& args, ShellMem& memory );
+
+// Commands
+
+const std::vector<std::string> COMMANDS = {
+	"ann",
+	"set",
+	"help",
+	"save"
+};
+
+// Function pointers
+int (*COMMAND_FUNCS[])(const std::vector<Arg>&, ShellMem& ) = {
+	&annCmd,
+	&setCmd,
+	&helpCmd,
+	&saveCmd
+};
+
+/* Returns object by reference which matches name passed in. Returns Null if no match found. 
+Object must have getName() method which returns a string member */
+auto& getThing( const std::string& name, std::vector<auto>& objs );
+
+
 #endif

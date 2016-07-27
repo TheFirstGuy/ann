@@ -11,6 +11,9 @@ Header file for instance class and functions.
 #include <memory>
 #include <string>
 
+
+enum SetType { TRAINING, EVALUATION, LIVE }; 
+
 /* The Instance class encapsulates data for a single instance.
 It keeps track of features, class names, and data.
 */
@@ -64,6 +67,22 @@ struct Instance{
 		// Pointer to names of each expected output classification
 		std::shared_ptr<std::vector<std::string> > classes;
 		
+};
+
+/* Collection of instances catagorized by the intended use */
+class InstanceSet{
+	public:
+		InstanceSet( std::string name, SetType type, std::vector<Instance> instance );
+		
+		InstanceSet( std::string name, SetType type );
+		
+		std::vector<Instance> instances;
+		
+		std::string getName() const;
+		SetType getType() const;
+	private:
+		std::string name;
+		SetType type;
 };
 
 #endif
