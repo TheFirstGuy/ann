@@ -10,6 +10,7 @@ Utility functions for ANN.
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "Instance.h"
 
 // Returns random double from (0 to 1)
@@ -36,4 +37,6 @@ const int& strLen, std::vector<Instance>& instances );
 // Returns a copy of a string in lower case 
 std::string toLower( const std::string& str );
 
+/* Prints result of ann activation to given ostream.*/
+bool printResult( const std::vector<double>& result, const Instance& inst, std::ostream& os );
 #endif

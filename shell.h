@@ -21,7 +21,7 @@ Also modify the help function.
 
 
 // Types of arguments
-enum A_TYPE { CMD, FLAG, DSC, VAL };
+enum A_TYPE { CMD, FLAG, DSC, VAL, REDIR };
 
 struct Arg{
 	A_TYPE type;
@@ -58,10 +58,10 @@ iterations. acc is the desired accuracy.
 -rm [name=], Deletes the given ann.
 If arguments are not formatted correctly, returns -1.
 */
-int annCmd( const std::vector<Arg>& args , ShellMem& memory);
+int annCmd( const std::vector<Arg>& args , ShellMem& memory, std::ostream& os);
 
 // ANN helper functions
-int annActivate( const std::vector<Arg>& args, ShellMem& memory );
+int annActivate( const std::vector<Arg>& args, ShellMem& memory, std::ostream& os );
 int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns );
 int annTrain( const std::vector<Arg>& args, ShellMem& memory );
 int annDisplay( const std::vector<Arg>& args, std::vector<ANN>& anns );
@@ -76,14 +76,14 @@ and will default to the filename (minus extension) if not provided.
 -rm [name=], Deletes given set from memory.
 If arguments are not formatted correctly, returns -1.
 */
-int setCmd( const std::vector<Arg>& args , ShellMem& memory);
+int setCmd( const std::vector<Arg>& args , ShellMem& memory, std::ostream& os);
 
 /* The help command prints descriptive information on shell commands.
 If just 'help' is entered a list of all commands will be printed. Otherwise,
 the second argument should be a command which is to be described.
 */
 
-int helpCmd( const std::vector<Arg>& args, ShellMem& memory );
+int helpCmd( const std::vector<Arg>& args, ShellMem& memory, std::ostream& os );
 
 /* The save command allows for ANNs and results to be saved to a JSON file.
 FLAGS:
@@ -91,7 +91,7 @@ FLAGS:
 [name=] [filename=], Saves a specific ann to specified file.
 */
 
-int saveCmd( const std::vector<Arg>& args, ShellMem& memory );
+int saveCmd( const std::vector<Arg>& args, ShellMem& memory, std::ostream& os );
 
 // Commands
 
@@ -102,17 +102,8 @@ const std::vector<std::string> COMMANDS = {
 	"save"
 };
 
-// Function pointers
-int (*COMMAND_FUNCS[])(const std::vector<Arg>&, ShellMem& ) = {
-	&annCmd,
-	&setCmd,
-	&helpCmd,
-	&saveCmd
-};
+//int (*COMMAND_FUNCS_ARRAY[])(const std::vector<Arg>&, ShellMem&, std::ostream& );
 
-/* Returns object by reference which matches name passed in. Returns Null if no match found. 
-Object must have getName() method which returns a string member */
-auto& getThing( const std::string& name, std::vector<auto>& objs );
 
 
 #endif

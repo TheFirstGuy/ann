@@ -13,7 +13,7 @@ Implementation file for ANN.
 #include "Instance.h"
 
 ANN::ANN(const int& numFeatures, const std::vector<int>& layers, const double& learningRate,
-const std::string& name  = "UNNAMED")
+const std::string& name  )
 	:numIn(numFeatures), learningRate(learningRate),numOut(layers[layers.size() - 1]),
 	name(name){
 	// Initialize layers of the network
@@ -160,7 +160,7 @@ void ANN::train(const Instance& instance, std::vector<double>& result ){
 }
 
 bool ANN::checkInstance( const Instance& inst ) const{
-	return inst.classes->size() == this.getNumOut() && inst.data->size() == this.getNumIn();
+	return inst.classes->size() == this->getNumOut() && inst.data->size() == this->getNumIn();
 }
 	
 void ANN::getOutputs( const int& layer, std::vector<double>& result ) const{
@@ -233,3 +233,12 @@ void ANN::getNetSynapse() const{
 		}
 	}
 }
+
+bool operator==( const ANN& left, const ANN& right ){
+	return left.getName() == right.getName();
+}
+
+bool operator==( const ANN& left, const std::string& right){
+	return left.getName() == right;
+}
+

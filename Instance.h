@@ -72,7 +72,7 @@ struct Instance{
 /* Collection of instances catagorized by the intended use */
 class InstanceSet{
 	public:
-		InstanceSet( std::string name, SetType type, std::vector<Instance> instance );
+		InstanceSet( std::string name, SetType type, std::vector<Instance> instances );
 		
 		InstanceSet( std::string name, SetType type );
 		
@@ -84,5 +84,9 @@ class InstanceSet{
 		std::string name;
 		SetType type;
 };
+
+bool operator==( const InstanceSet& left, const InstanceSet& right );
+
+bool operator==( const InstanceSet& left, const std::string& right );
 
 #endif

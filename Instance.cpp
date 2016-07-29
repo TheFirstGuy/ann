@@ -95,8 +95,21 @@ std::string Instance::getClassName( const int& index ) const{
 	return (*features)[index];
 }
 
+InstanceSet::InstanceSet( std::string name, SetType type, std::vector<Instance> instances )
+	: name(name), type(type), instances(instances){}
+		
+InstanceSet::InstanceSet( std::string name, SetType type )
+	: name(name), type(type){}
+		
+std::string InstanceSet::getName() const{ return name; }
+	
+bool operator==( const InstanceSet& left, const InstanceSet& right ){
+	return left.getName() == right.getName();
+}
 
-
+bool operator==( const InstanceSet& left, const std::string& right ){
+	return left.getName() == right;
+}
 
 
 
