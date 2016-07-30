@@ -8,6 +8,7 @@ Implementation of Utility functions for ANN.
 #include <string>			
 #include <memory>			// smart pointers
 #include <vector>
+#include <iostream>
 #include "Instance.h"
 #include <math.h>
 #include "utils.h"
@@ -121,6 +122,7 @@ const int& strLen, std::vector<Instance>& instances ){
 	}
 }
 
+/* Converts string to lower case */
 std::string toLower( const std::string& str ){
 	std::string result(str.length(), '0');
 	for( std::size_t i = 0; i < str.length(); ++i ){
@@ -132,6 +134,22 @@ std::string toLower( const std::string& str ){
 	return result;
 }
 
-void printResult( const vector<double>& result, const Instance& inst, ostream& os ){
-
+/* Prints result of ann activation to given ostream.*/
+bool printResult( const std::vector<double>& result, const Instance& inst, std::ostream& os ){
+	if( result.size() != inst.classes->size() ){ return false; }
+	os << "Instance Name: " << inst.name << std::endl;
+	double max = 0;
+	size_t index = 0;
+	for( size_t i = 0; i < inst.classes->size(); ++i ){
+		if( max < result[i] ){ 
+			max = result[i]; 
+			index = i;
+		}
+		os << (*inst.classes)[i] << ": " << result[i] << std::endl;
+	}
+	os << "Classification: " << (*inst.classes)[index] << std::endl;
+	return true;
 }
+
+
+

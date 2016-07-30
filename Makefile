@@ -3,7 +3,7 @@
 
 CC=g++
 
-CFLAGS= -std=c++0x -c
+CFLAGS= -std=c++14 -c
 
 SOURCES= main.o ANN.o Neuron.o Instance.o utils.o preprocessor.o
 

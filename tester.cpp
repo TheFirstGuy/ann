@@ -391,6 +391,9 @@ void testArgParser(){
 				case VAL:
 					std::cout << "VAL: ";
 					break;
+				case REDIR:
+					std::cout << "REDIR: ";
+					break;	
 				default:
 					std::cout << "UNKNOWN: ";
 					break;	

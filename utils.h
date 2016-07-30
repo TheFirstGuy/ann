@@ -10,6 +10,7 @@ Utility functions for ANN.
 
 #include <vector>
 #include <string>
+#include <iostream>
 #include "Instance.h"
 
 //F1 Score class, meant to hold variables and functions needed for calculating F1 score
@@ -56,6 +57,7 @@ const int& strLen, std::vector<Instance>& instances );
 
 // Returns a copy of a string in lower case 
 std::string toLower( const std::string& str );
+<<<<<<< HEAD
 //TODO: add function to check results of classified data.
 //Correctly classified and un-classified data should be in two seperate containers.
 //Sweep each container, then update the needed variables for calculating FScore accordingly.
@@ -63,4 +65,9 @@ std::string toLower( const std::string& str );
 //A significance level of 0.05 should mean that the bottom 2.5% of the positive container should be false positive 
 //and top 2.5% of negative container should be false negatives.
 //I believe that its 2.5% since there are two sets to work with
+=======
+
+/* Prints result of ann activation to given ostream.*/
+bool printResult( const std::vector<double>& result, const Instance& inst, std::ostream& os );
+>>>>>>> ab759951266736e1936e42daa5f2761c21e31f3f
 #endif
