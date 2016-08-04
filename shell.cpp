@@ -241,7 +241,42 @@ int annActivate( const std::vector<Arg>& args, ShellMem& memory, std::ostream& o
 		return -1;
 	}
 }
-int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
+
+int annCreate( const std::vector<Arg>& args, std::vector<ANN>& anns ){
+	if( args.size() == 5 ){
+		if( args[2].type == VAL && args[3].type == VAL  && args[4].type == VAL){
+			// Check if unique name
+			std::vector<ANN>::iterator itr = std::find( anns.begin(), anns.end(), args[2].value );
+			if( itr != anns.end() ){
+				std::cout << "An ANN with name: " << args[2].value << " already exists." << std::endl;
+				return -1;
+			}
+			// Check for valid array
+			std::vector<int> layers;
+			if( !strToIntVec(args[3].value, layers) ){
+				std::cout << "Array invalid." << std::endl;
+				return -1;
+			}
+			// Check if valid learning rate
+			double learningRate;
+			if( !valDoubleStr( args[4].value, 0, args[4].value.size() ) ){
+				std::cout << "Learning rate: " << args[4].value << " is not a double." << std::endl;
+				return -1;
+			}
+			learningRate = std::stod(args[4].value );
+			anns.push_back( ANN(layers[0], layers, learningRate, args[2].value) );
+			return 1;
+		}
+		else{
+			std::cout << "Incorrect argument types." << std::endl;
+			return -1;
+		}
+	}
+	else{
+		std::cout << "Incorrect number of arguments." << std::endl; 
+		return -1;
+	}
+}
 int annTrain( const std::vector<Arg>& args, ShellMem& memory ){}
 int annDisplay( const std::vector<Arg>& args, std::vector<ANN>& anns ){}
 int annRemove( const std::vector<Arg>& args, std::vector<ANN>& anns ){}

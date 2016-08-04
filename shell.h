@@ -49,8 +49,8 @@ int executeCmd( const std::vector<Arg>& args );
 FLAGS:
 -a [name=] [filename=]*, Activates on a ann with provided name. If no file is provided
 to read from, the user will be prompted to manually enter values. 
--c [name=]*, Creates a new ann with provided name. If no name is provided, 
-a default name will be provided E.g. "ann1".
+-c [name=] [layers=] [learningRate=], Creates a new ann with provided name and with the network structure
+defined by the provided array. 
 -t [name=] [set=] [itr=] [acc=], Trains a named ann on a test set. Name is 
 the name of the ann. Set is the name of the training set. Itr is the max number
 iterations. acc is the desired accuracy. 
