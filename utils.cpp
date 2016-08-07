@@ -151,5 +151,78 @@ bool printResult( const std::vector<double>& result, const Instance& inst, std::
 	return true;
 }
 
+/* Checks if a string can be converted into a vector of integers. */
+bool valCommaStr( const std::string& str, bool (*elementCheck)( const std::string& , 
+const size_t&
+, const size_t& ) ){
+	size_t low = 0, high = 1;
+	int counter = 0;
+	for( size_t i = 0; i < str.size(); ++i ){
+		// Check if char is a comma
+		if( (unsigned int)str[i] == 44 ){
+			// Check if valid element
+			 if(!elementCheck( str, low, high) || i == str.size() - 1){ return false; }
+			 low = high; 
+		}
+		else{ high++; }
+	}
+	return true;
+}
 
+/* Checks if substring is a valid integer. [ Low, high ) */
+bool valIntStr( const std::string& str, const size_t& low, const size_t& high ){
+	if( low == high ) { return false; }
+	bool startFlag = false;
+	for( size_t i = low; i < high; ++i){
+		if( (unsigned int)str[i] > 47 && (unsigned int)str[i] < 58 ){ 
+			// Check if number starts with 0
+			if( !startFlag && (unsigned int)str[i] == 48 ){ return false;}
+			startFlag = true;
+		}
+		// Check if a character that is not space occurs
+		else if( (unsigned int)str[i] != 32 ){ return false; }
+		// Check for space interupting integer
+		else if( startFlag ){ return false; }
+	}
+	return true;
+}
+
+bool strToIntVec( const std::string& str, std::vector<int>& result ){
+	// Checks if valid string
+	if( valCommaStr( str, &valIntStr )){
+		size_t idx = 0;
+		while( idx < str.size() ){
+			result.push_back(std::stoi( str.substr(idx), &idx ));
+			idx++;
+		}
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+bool valDoubleStr( const std::string& str, const size_t& low, const size_t& high ){
+	if( low == high ){ return false; }
+	bool startFlag = false;
+	bool decimalFlag = false;
+	for( size_t i = low; i < high; ++i){
+		if( (unsigned int)str[i] > 47 && (unsigned int)str[i] < 58 ){ startFlag = true;}
+		// Check if decimal point
+		else if( (unsigned int)str[i] == 46){
+			if( decimalFlag ){ return false; }
+			decimalFlag = true;
+		}
+		// Check if negative sign
+		else if( (unsigned int)str[i] == 45 ){
+			if(startFlag){ return false; }
+			startFlag = true;
+		}
+		// Check if a character that is not space occurs
+		else if( (unsigned int)str[i] != 32 ){ return false; }
+		// Check for space interupting double
+		else if( startFlag ){ return false; }
+	}
+	return true;
+}
 

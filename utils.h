@@ -69,5 +69,29 @@ std::string toLower( const std::string& str );
 
 /* Prints result of ann activation to given ostream.*/
 bool printResult( const std::vector<double>& result, const Instance& inst, std::ostream& os );
+<<<<<<< HEAD
 >>>>>>> ab759951266736e1936e42daa5f2761c21e31f3f
+=======
+
+/*
+ Checks if a comma seperated string can be converted into a vector of some element.
+ elementCheck is a function pointer which takes a substring that checks if substring can
+ be valid element.
+ */
+bool valCommaStr( const std::string& str, bool (*elementCheck)( const std::string& , const size_t&
+, const size_t& ) );
+
+/* Checks if substring is a valid integer. [ Low, high ) */
+bool valIntStr( const std::string& str, const size_t& low, const size_t& high );
+
+/* Converts a comma seperated string of integers to a vector of ints.
+ Returns true when successful. */
+bool strToIntVec( const std::string& str, std::vector<int>& result );
+
+/* Checks if substring is a valid double. [Low, high ) */
+bool valDoubleStr( const std::string& str, const size_t& low, const size_t& high );
+
+
+
+>>>>>>> 1d3717b8924b4a89aea51d25ca86c5d9169a2fd5
 #endif
